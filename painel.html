@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jiu-Jitsu Reformado</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<!-- ==== APP ==== -->
+<div id="app">
+<nav id="app-nav" class="app-nav-bar" style="display:none;">
+  <div class="nav-logo"><span style="color:var(--d);">✝</span>JJR<span> Painel</span></div>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <span style="font-size:.78rem;color:rgba(245,240,232,.4);" id="user-label">Professor</span>
+    <button class="btn-nav" onclick="logout()">← Sair</button>
+  </div>
+</nav>
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Geral</div>
+      <div class="sidebar-item active" data-tab="dashboard" onclick="showTab('dashboard',this)"><span class="icon">📊</span>Dashboard</div>
+      <div class="sidebar-item" data-tab="alunos" onclick="showTab('alunos',this)"><span class="icon">👥</span>Alunos</div>
+      <div class="sidebar-item" data-tab="ranking" onclick="showTab('ranking',this)"><span class="icon">🏅</span>Ranking</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Aulas</div>
+      <div class="sidebar-item" data-tab="presenca" onclick="showTab('presenca',this)"><span class="icon">✅</span>Presença</div>
+      <div class="sidebar-item" data-tab="relatorio" onclick="showTab('relatorio',this)"><span class="icon">📊</span>Relatório</div>
+      <div class="sidebar-item" data-tab="calendario" onclick="showTab('calendario',this)"><span class="icon">📅</span>Calendário</div>
+      <div class="sidebar-item" data-tab="pontos" onclick="showTab('pontos',this)"><span class="icon">⭐</span>Dar Pontos</div>
+      <div class="sidebar-item" data-tab="devocional" onclick="showTab('devocional',this)"><span class="icon">✝</span>Devocional</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Projeto</div>
+      <div class="sidebar-item" data-tab="professores" onclick="showTab('professores',this)"><span class="icon">👨‍🏫</span>Professores</div>
+      <div class="sidebar-item" data-tab="metas-adm" onclick="showTab('metas-adm',this)"><span class="icon">🎯</span>Metas</div>
+      <div class="sidebar-item" data-tab="campeonatos" onclick="showTab('campeonatos',this)"><span class="icon">🏆</span>Campeonatos</div>
+      <div class="sidebar-item" data-tab="cestas" onclick="showTab('cestas',this)"><span class="icon">🥫</span>Cestas Básicas</div>
+      <div class="sidebar-item" data-tab="recompensas" onclick="showTab('recompensas',this)"><span class="icon">🎁</span>Recompensas</div>
+      <div class="sidebar-item" data-tab="inscricoes" onclick="showTab('inscricoes',this)"><span class="icon">📋</span>Inscrições</div>
+      <div class="sidebar-item" data-tab="configuracoes" onclick="showTab('configuracoes',this)"><span class="icon">⚙️</span>Configurações</div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- DASHBOARD -->
+    <div id="tab-dashboard" class="tab-content active">
+      <div class="page-title">Dashboard</div>
+      <div class="page-sub" id="dash-date">Visão geral do projeto</div>
+
+      <!-- ANIVERSÁRIOS ALERTA -->
+      <div id="bday-section" style="margin-bottom:1.25rem;display:none;">
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;">
+          <span style="font-size:1.1rem;">🎂</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--d);">Aniversários</span>
+        </div>
+        <div id="bday-list"></div>
+      </div>
+
+      <div class="cards-row">
+        <div class="stat-card"><div class="stat-label">Alunos Ativos</div><div class="stat-value" id="ds-total">0</div><div class="stat-sub">cadastrados</div></div>
+        <div class="stat-card"><div class="stat-label">Média Presença</div><div class="stat-value" id="ds-freq">0%</div><div class="stat-sub">último mês</div></div>
+        <div class="stat-card"><div class="stat-label">Cestas Mês</div><div class="stat-value" id="ds-cestas">0</div><div class="stat-sub" id="ds-cestas-sub">meta: 50</div></div>
+        <div class="stat-card"><div class="stat-label">Inscrições Pend.</div><div class="stat-value" id="ds-ins">0</div><div class="stat-sub">aguardando</div></div>
+        <div class="stat-card"><div class="stat-label">Pontos Dados</div><div class="stat-value" id="ds-pts">0</div><div class="stat-sub">total acumulado</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-bottom:1.4rem;">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">✝ Devocional da Semana</span><button class="btn-sm btn-g" style="font-size:.72rem;" onclick="showTab('devocional',null)">Ver todos</button></div>
+          <div class="panel-body" id="dash-devo" style="display:flex;flex-direction:column;gap:.75rem;"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">⚠ Baixa Frequência</span></div>
+          <div class="panel-body" id="dash-alertas"></div>
+        </div>
+      </div>
+
+      <!-- RANKING VISUAL com fotos e pontuação visível -->
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">🏅 Ranking de Pontos</span><button class="btn-sm btn-g" style="font-size:.72rem;" onclick="showTab('ranking',null)">Ver completo</button></div>
+        <div class="panel-body">
+          <div class="aluno-cards-grid" id="dash-cards"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALUNOS -->
+    <div id="tab-alunos" class="tab-content">
+      <div class="page-title">Alunos</div>
+      <div class="page-sub">Gerencie os alunos do projeto</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">Cadastrar Novo Aluno</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="flex:3;min-width:160px;"><label>Nome Completo</label><input id="al-nome" type="text" placeholder="Nome do aluno"></div>
+            <div class="field" style="min-width:120px;"><label>Telefone/WhatsApp</label><input id="al-tel" type="text" placeholder="(27) 9 0000-0000"></div>
+            <div class="field" style="max-width:80px;"><label>Idade</label><input id="al-idade" type="number" placeholder=""></div>
+            <div class="field" style="max-width:130px;"><label>Nascimento</label><input id="al-nasc" type="date" title="Data de nascimento para aniversário"></div>
+            <div class="field" style="min-width:120px;"><label>Faixa</label>
+              <select id="al-faixa"><option value="branca">Branca</option><option value="azul">Azul</option><option value="roxa">Roxa</option><option value="marrom">Marrom</option><option value="preta">Preta</option></select>
+            </div>
+            <div class="field" style="max-width:90px;"><label>Grau</label>
+              <select id="al-grau"><option value="0">—</option><option value="1">1°</option><option value="2">2°</option><option value="3">3°</option><option value="4">4°</option></select>
+            </div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-v" onclick="cadastrarAluno()">+ Adicionar</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Lista de Alunos</span><span style="font-size:.8rem;color:rgba(245,240,232,.35);" id="total-al">0</span></div>
+        <div style="overflow-x:auto;"><table><thead><tr><th>Aluno</th><th>Faixa / Grau</th><th>Pontos</th><th>Freq.</th><th>WhatsApp</th><th>Ações</th></tr></thead><tbody id="alunos-tb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- RANKING -->
+    <div id="tab-ranking" class="tab-content">
+      <div class="page-title">Ranking de Pontos</div>
+      <div class="page-sub">Classificação geral por pontuação acumulada</div>
+      <div class="panel"><div class="panel-body" id="ranking-full" style="padding:.5rem 1.25rem;"></div></div>
+    </div>
+
+    <!-- PRESENÇA -->
+    <div id="tab-presenca" class="tab-content">
+      <div class="page-title">Registrar Presença</div>
+      <div class="page-sub">Chamada da aula de hoje</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-body">
+          <div class="form-row">
+            <div class="field"><label>Data</label><input id="pres-data" type="date"></div>
+            <div class="field"><label>Dia</label><select id="pres-dia"><option value="seg">Segunda-feira</option><option value="qui">Quinta-feira</option></select></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="salvarPresenca()">Salvar Presença (+5 pts)</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Chamada</span><span style="font-size:.85rem;color:var(--vc);" id="pres-count">0 presentes</span></div>
+        <div style="overflow-x:auto;"><table><thead><tr><th>Aluno</th><th>Faixa</th><th>Presença</th></tr></thead><tbody id="chamada-tb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- RELATÓRIO DE PRESENÇA -->
+    <div id="tab-relatorio" class="tab-content">
+      <div class="page-title">Relatório de Presença</div>
+      <div class="page-sub">Gere relatórios por período para impressão ou PDF</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field"><label>Data Início</label><input id="rel-inicio" type="date"></div>
+            <div class="field"><label>Data Fim</label><input id="rel-fim" type="date"></div>
+            <div class="field" style="max-width:180px;"><label>Aluno (opcional)</label><select id="rel-aluno"><option value="">Todos os alunos</option></select></div>
+            <div class="field" style="justify-content:flex-end;gap:.5rem;flex-direction:row;align-items:flex-end;">
+              <button class="btn-sm btn-v" onclick="gerarRelatorio()">📊 Gerar</button>
+              <button class="btn-sm btn-g" onclick="imprimirRelatorio()">🖨️ Imprimir/PDF</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="relatorio-resultado"></div>
+    </div>
+
+    <!-- CALENDÁRIO -->
+    <div id="tab-calendario" class="tab-content">
+      <div class="page-title">Calendário</div>
+      <div class="page-sub">Aulas, eventos e campeonatos</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">Adicionar Evento</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="flex:2;min-width:180px;"><label>Título do Evento</label><input id="ev-titulo" type="text" placeholder="Ex: Campeonato Regional"></div>
+            <div class="field"><label>Data</label><input id="ev-data" type="date"></div>
+            <div class="field" style="max-width:140px;"><label>Tipo</label>
+              <select id="ev-tipo">
+                <option value="aula">Aula Regular</option>
+                <option value="evento">Evento Especial</option>
+                <option value="camp">Campeonato</option>
+              </select>
+            </div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-v" onclick="addEvento()">+ Adicionar</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-body">
+          <div class="cal-nav">
+            <button class="btn-sm btn-g" onclick="calNav(-1)">‹ Anterior</button>
+            <span class="cal-month" id="cal-month-label"></span>
+            <button class="btn-sm btn-g" onclick="calNav(1)">Próximo ›</button>
+          </div>
+          <div class="cal-header">
+            <div class="cal-day-name">Dom</div><div class="cal-day-name">Seg</div><div class="cal-day-name">Ter</div>
+            <div class="cal-day-name">Qua</div><div class="cal-day-name">Qui</div><div class="cal-day-name">Sex</div><div class="cal-day-name">Sáb</div>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PONTOS -->
+    <div id="tab-pontos" class="tab-content">
+      <div class="page-title">Dar Pontos</div>
+      <div class="page-sub">Atribua pontos por ações especiais</div>
+      <div class="panel">
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="flex:2;min-width:180px;"><label>Aluno</label><select id="pt-aluno"></select></div>
+            <div class="field" style="flex:2;min-width:200px;"><label>Motivo</label>
+              <select id="pt-motivo">
+                <option value="3">+3 — Ministrou devocional</option>
+                <option value="10">+10 — Trouxe visitante</option>
+                <option value="8">+8 — Participou de campeonato</option>
+                <option value="20">+20 — Pódio em campeonato</option>
+                <option value="5">+5 — Juntou 1 kg de alimento</option>
+                <option value="15">+15 — Montou cesta básica</option>
+                <option value="2">+2 — Participação especial</option>
+              </select>
+            </div>
+            <div class="field" style="max-width:90px;"><label>Pts extras</label><input id="pt-extra" type="number" value="0" min="0"></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="darPontos()">Dar Pontos ⭐</button></div>
+          </div>
+          <div id="pts-log" style="margin-top:1.25rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEVOCIONAL -->
+    <div id="tab-devocional" class="tab-content">
+      <div class="page-title">Escala de Devocional</div>
+      <div class="page-sub">A Palavra abre cada aula — segunda e quinta</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">Agendar</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="min-width:170px;"><label>Aluno</label><select id="dv-aluno"></select></div>
+            <div class="field"><label>Dia</label><select id="dv-dia"><option value="seg">Segunda</option><option value="qui">Quinta</option></select></div>
+            <div class="field"><label>Data</label><input id="dv-data" type="date"></div>
+            <div class="field" style="flex:2;"><label>Passagem</label><input id="dv-passagem" type="text" placeholder="Ex: João 3:16"></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-v" onclick="agendarDevo()">Agendar ✝</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Próximos Devocionais</span></div>
+        <div class="panel-body"><div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;" id="devo-list"></div></div>
+      </div>
+    </div>
+
+    <!-- PROFESSORES -->
+    <div id="tab-professores" class="tab-content">
+      <div class="page-title">Professores</div>
+      <div class="page-sub">Cadastro e níveis de acesso</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">Cadastrar Professor</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="flex:2;min-width:160px;"><label>Nome</label><input id="pf-nome" type="text" placeholder="Nome do professor"></div>
+            <div class="field"><label>Usuário</label><input id="pf-user" type="text" placeholder="login"></div>
+            <div class="field"><label>Senha</label><input id="pf-pass" type="password" placeholder="••••"></div>
+            <div class="field" style="max-width:150px;"><label>Nível de Acesso</label>
+              <select id="pf-nivel">
+                <option value="admin">Admin (total)</option>
+                <option value="prof">Professor</option>
+                <option value="assist">Assistente</option>
+              </select>
+            </div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-v" onclick="cadastrarProf()">+ Adicionar</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Equipe</span></div>
+        <div class="panel-body" id="prof-list"></div>
+      </div>
+    </div>
+
+    <!-- METAS ADMIN -->
+    <div id="tab-metas-adm" class="tab-content">
+      <div class="page-title">Metas do Projeto</div>
+      <div class="page-sub">Atualize o progresso das metas públicas</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">Nova Meta</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="flex:3;min-width:200px;"><label>Título</label><input id="mt-titulo" type="text" placeholder="Ex: Tatame novo"></div>
+            <div class="field"><label>Meta (R$)</label><input id="mt-meta" type="number" placeholder="3500"></div>
+            <div class="field"><label>Arrecadado (R$)</label><input id="mt-atual" type="number" placeholder="0"></div>
+            <div class="field" style="min-width:160px;"><label>Detalhe</label><input id="mt-detalhe" type="text" placeholder="Descrição curta"></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-v" onclick="addMeta()">+ Adicionar</button></div>
+          </div>
+        </div>
+      </div>
+      <div id="metas-adm-list"></div>
+    </div>
+
+    <!-- CAMPEONATOS -->
+    <div id="tab-campeonatos" class="tab-content">
+      <div class="page-title">Campeonatos</div>
+      <div class="page-sub">Registre participações e resultados</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="min-width:170px;"><label>Aluno</label><select id="camp-aluno"></select></div>
+            <div class="field" style="flex:2;min-width:180px;"><label>Campeonato</label><input id="camp-nome" type="text" placeholder="Nome do campeonato"></div>
+            <div class="field"><label>Resultado</label>
+              <select id="camp-res"><option value="8">Participou (+8 pts)</option><option value="20_3">🥉 3º Lugar (+20 pts)</option><option value="20_2">🥈 2º Lugar (+20 pts)</option><option value="20_1">🥇 Campeão (+20 pts)</option></select>
+            </div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="regCamp()">Registrar 🏆</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel"><div style="overflow-x:auto;"><table><thead><tr><th>Aluno</th><th>Campeonato</th><th>Resultado</th><th>Pontos</th></tr></thead><tbody id="camp-tb"><tr><td colspan="4" style="text-align:center;color:rgba(245,240,232,.25);padding:2rem;">Nenhum registro</td></tr></tbody></table></div></div>
+    </div>
+
+    <!-- CESTAS -->
+    <div id="tab-cestas" class="tab-content">
+      <div class="page-title">Cestas Básicas</div>
+      <div class="page-sub">Registre contribuições para a campanha social</div>
+      <div class="cards-row">
+        <div class="stat-card"><div class="stat-label">Total Cestas</div><div class="stat-value" id="c-total">0</div></div>
+        <div class="stat-card"><div class="stat-label">Kg de Alimentos</div><div class="stat-value" id="c-kg">0</div></div>
+      </div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="min-width:170px;"><label>Aluno</label><select id="cesta-aluno"></select></div>
+            <div class="field"><label>Tipo</label><select id="cesta-tipo"><option value="kg">Alimentos (kg)</option><option value="cesta">Cesta Básica</option></select></div>
+            <div class="field" style="max-width:100px;"><label>Qtd</label><input id="cesta-qtd" type="number" value="1" min="1"></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-v" onclick="regCesta()">Registrar 🥫</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel"><div style="overflow-x:auto;"><table><thead><tr><th>Aluno</th><th>Tipo</th><th>Qtd</th><th>Pontos</th></tr></thead><tbody id="cestas-tb"><tr><td colspan="4" style="text-align:center;color:rgba(245,240,232,.25);padding:2rem;">Nenhuma contribuição</td></tr></tbody></table></div></div>
+    </div>
+
+    <!-- RECOMPENSAS -->
+    <div id="tab-recompensas" class="tab-content">
+      <div class="page-title">Recompensas</div>
+      <div class="page-sub">Resgate de prêmios por pontos acumulados</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="min-width:170px;"><label>Aluno</label><select id="rec-aluno"></select></div>
+            <div class="field" style="flex:2;"><label>Recompensa</label>
+              <select id="rec-item">
+                <option value="300|Livro Cristão">300 pts — Livro Cristão</option>
+                <option value="450|Camiseta JJR">450 pts — Camiseta JJR</option>
+                <option value="500|Destaque do Mês">500 pts — Destaque do Mês</option>
+                <option value="600|Inscrição em Campeonato">600 pts — Inscrição em Campeonato</option>
+                <option value="800|Kimono Branco">800 pts — Kimono Branco</option>
+              </select>
+            </div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="regRecompensa()">Resgatar 🎁</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel"><div style="overflow-x:auto;"><table><thead><tr><th>Aluno</th><th>Recompensa</th><th>Pts Gastos</th><th>Data</th></tr></thead><tbody id="rec-tb"><tr><td colspan="4" style="text-align:center;color:rgba(245,240,232,.25);padding:2rem;">Nenhum resgate ainda</td></tr></tbody></table></div></div>
+    </div>
+
+    <!-- INSCRIÇÕES -->
+    <div id="tab-inscricoes" class="tab-content">
+      <div class="page-title">Inscrições Recebidas</div>
+      <div class="page-sub">Interessados em aula teste</div>
+      <div class="panel"><div style="overflow-x:auto;"><table><thead><tr><th>Nome</th><th>Idade</th><th>WhatsApp</th><th>Dia</th><th>Exp.</th><th>Status</th><th>Ação</th></tr></thead><tbody id="ins-tb"><tr><td colspan="7" style="text-align:center;color:rgba(245,240,232,.25);padding:2rem;">Nenhuma inscrição</td></tr></tbody></table></div></div>
+    </div>
+
+    <!-- CONFIGURAÇÕES -->
+    <div id="tab-configuracoes" class="tab-content">
+      <div class="page-title">Configurações</div>
+      <div class="page-sub">Personalize o projeto e faça upload de fotos</div>
+
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">📸 Foto da Landing Page</span></div>
+        <div class="panel-body">
+          <p style="font-size:.85rem;color:rgba(245,240,232,.5);margin-bottom:1rem;">Faça upload da foto principal que aparece na página inicial do site.</p>
+          <div style="display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;">
+            <div style="width:200px;height:150px;border-radius:10px;overflow:hidden;border:2px solid rgba(201,168,76,.2);background:rgba(26,71,49,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <img id="cfg-foto-preview" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;">
+              <span id="cfg-foto-placeholder" style="font-size:2rem;">📸</span>
+            </div>
+            <div>
+              <div class="foto-upload-area" style="width:220px;" onclick="document.getElementById('cfg-foto-input').click()">
+                <input type="file" id="cfg-foto-input" accept="image/*" style="display:none;" onchange="handleCfgFoto(event)">
+                <div style="font-size:1.5rem;margin-bottom:.5rem;">⬆️</div>
+                <div style="font-size:.82rem;color:rgba(245,240,232,.5);">Clique para selecionar<br>imagem (JPG, PNG)</div>
+              </div>
+              <p style="font-size:.72rem;color:rgba(245,240,232,.3);margin-top:.75rem;">A foto será exibida na seção "Nossa história" da landing page.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">⚙️ Informações do Projeto</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;gap:.875rem;">
+            <div class="field" style="flex:2;min-width:200px;"><label>Nome do Projeto</label><input id="cfg-nome" type="text" value="Jiu-Jitsu Reformado"></div>
+            <div class="field"><label>Horário das Aulas</label><input id="cfg-horario" type="text" value="19h30 – 21h00"></div>
+            <div class="field" style="flex:2;"><label>Endereço</label><input id="cfg-endereco" type="text" placeholder="Endereço da igreja"></div>
+          </div>
+          <div style="margin-top:1rem;">
+            <button class="btn-sm btn-v" onclick="salvarConfig()">💾 Salvar Configurações</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">🔑 Alterar Senha</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;gap:.875rem;">
+            <div class="field"><label>Senha Atual</label><input id="cfg-pass-atual" type="password" placeholder="••••"></div>
+            <div class="field"><label>Nova Senha</label><input id="cfg-pass-nova" type="password" placeholder="••••"></div>
+            <div class="field"><label>Confirmar Nova Senha</label><input id="cfg-pass-conf" type="password" placeholder="••••"></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="alterarSenha()">🔑 Alterar</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+</div><!-- end app -->
+
+<!-- MODAL DETALHE DO ALUNO -->
+<div class="modal-overlay" id="modal-aluno">
+  <div class="modal">
+    <div class="modal-title"><span id="modal-nome-title">Aluno</span><button class="close-btn" onclick="closeModal()">×</button></div>
+    <div class="detail-grid">
+      <div class="detail-foto">
+        <div class="detail-av" id="modal-av"></div>
+        <div class="detail-nome" id="modal-nome"></div>
+        <div class="detail-faixa" id="modal-faixa"></div>
+        <div style="margin-top:1rem;">
+          <div class="foto-upload-area" onclick="triggerFotoUpload()">
+            <input type="file" id="foto-input" accept="image/*" onchange="handleFotoUpload(event)">
+            <div style="font-size:.8rem;color:rgba(245,240,232,.4);">📸 Clique para adicionar foto</div>
+          </div>
+        </div>
+        <div style="margin-top:.875rem;" id="modal-wa-btn"></div>
+      </div>
+      <div>
+        <div style="margin-bottom:1rem;" id="modal-stats"></div>
+        <div style="margin-bottom:1rem;">
+          <div style="font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,240,232,.35);margin-bottom:.75rem;">Editar Cadastro</div>
+          <div class="form-row" style="flex-wrap:wrap;gap:.75rem;">
+            <div class="field" style="flex:2;"><label>Nome</label><input id="ed-nome" type="text"></div>
+            <div class="field"><label>Telefone/WhatsApp</label><input id="ed-tel" type="text"></div>
+          </div>
+          <div class="form-row" style="flex-wrap:wrap;gap:.75rem;margin-top:.75rem;">
+            <div class="field"><label>Idade</label><input id="ed-idade" type="number"></div>
+            <div class="field"><label>Nascimento</label><input id="ed-nasc" type="date"></div>
+            <div class="field"><label>Faixa</label>
+              <select id="ed-faixa"><option value="branca">Branca</option><option value="azul">Azul</option><option value="roxa">Roxa</option><option value="marrom">Marrom</option><option value="preta">Preta</option></select>
+            </div>
+            <div class="field"><label>Grau</label>
+              <select id="ed-grau"><option value="0">—</option><option value="1">1°</option><option value="2">2°</option><option value="3">3°</option><option value="4">4°</option></select>
+            </div>
+          </div>
+          <div class="form-row" style="margin-top:.75rem;">
+            <div class="field"><label>Observações</label><textarea id="ed-obs"></textarea></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+          <button class="btn-sm btn-v" onclick="salvarEdicao()">💾 Salvar</button>
+          <button class="btn-sm btn-d" onclick="promoverModal()">↑ Promover Grau</button>
+          <button class="btn-sm btn-r" onclick="removerModal()">✕ Remover</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script type="module" src="./js/painel.js"></script>
+</body>
+</html>

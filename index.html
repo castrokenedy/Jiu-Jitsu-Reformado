@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jiu-Jitsu Reformado</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/styles.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY (não abre automaticamente) -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-box">
+    <div style="text-align:center;margin-bottom:1.5rem;font-size:2rem;">✝</div>
+    <div class="login-title">Painel do Professor</div>
+    <div class="login-sub">Acesso restrito aos professores e coordenadores</div>
+    <div class="login-field"><label>Usuário</label><input id="login-user" type="text" placeholder="professor"></div>
+    <div class="login-field"><label>Senha</label><input id="login-pass" type="password" placeholder="••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="login-err" id="login-err">Usuário ou senha incorretos</div>
+    <button class="btn-primary" style="width:100%;padding:13px;margin-top:.5rem;" onclick="doLogin()">Entrar no Painel →</button>
+    <button class="btn-outline" style="width:100%;padding:11px;margin-top:.75rem;" onclick="closeLogin()">← Voltar ao site</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="nav-logo"><span style="color:var(--d);">✝</span>Jiu-Jitsu<span> Reformado</span></div>
+  <div class="nav-links">
+    <a onclick="scrollTo2('sobre')">Sobre</a>
+    <a onclick="scrollTo2('pontuacao')">Pontuação</a>
+    <a onclick="scrollTo2('ranking-pub')">Ranking</a>
+    <a onclick="scrollTo2('metas')">Metas</a>
+    <a onclick="scrollTo2('inscricao')">Inscrição</a>
+    <button class="btn-nav" onclick="openLogin()">Painel 🥋</button>
+  </div>
+</nav>
+
+<!-- ==== LANDING ==== -->
+<div id="landing">
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">✝ Igreja Reformada · Projeto Social Gratuito</div>
+    <h1>Jiu-Jitsu<em>Reformado</em></h1>
+    <p class="hero-desc">Treinamento gratuito de jiu-jítsu brasileiro para homens e rapazes a partir de 10 anos. Disciplina, fé e comunidade — formando caráter através das artes marciais.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="scrollTo2('inscricao')">Quero me inscrever</button>
+      <button class="btn-outline" onclick="scrollTo2('sobre')">Conhecer o projeto</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="h-stat-num">100%</div><div class="h-stat-label">Gratuito</div></div>
+      <div><div class="h-stat-num">2×</div><div class="h-stat-label">Semana</div></div>
+      <div><div class="h-stat-num">+10</div><div class="h-stat-label">Anos</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOTO DO PROJETO -->
+<div class="foto-section">
+  <div class="foto-inner">
+    <div class="foto-frame" id="landing-foto-frame" style="cursor:pointer;" onclick="document.getElementById('landing-foto-input').click()">
+      <div class="foto-placeholder" id="foto-placeholder">
+        <div class="icon">📸</div>
+        <p>Clique para adicionar<br>foto do projeto</p>
+      </div>
+      <img id="foto-projeto" src="" alt="Projeto na Igreja" style="display:none;width:100%;height:100%;object-fit:cover;">
+      <div class="foto-tag">📍 Igreja Reformada</div>
+      <input type="file" id="landing-foto-input" accept="image/*" style="display:none;" onchange="handleLandingFoto(event)">
+    </div>
+    <div class="foto-text">
+      <div class="sl">Nossa história</div>
+      <h2>Nascido dentro da <span>Igreja</span></h2>
+      <p>O Jiu-Jitsu Reformado surgiu do desejo de servir a comunidade com excelência, usando o esporte como ferramenta de transformação. Mais do que golpes e quedas — é sobre humildade, respeito e a centralidade de Cristo em cada aspecto da vida.</p>
+      <p>As aulas acontecem sempre <strong style="color:var(--dl);">segunda e quinta-feira às 19h30</strong>, cada uma abrindo com um breve devocional conduzido por um dos próprios participantes.</p>
+      <div style="display:flex;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;">
+        <div style="background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:.875rem 1.25rem;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;color:var(--d);">Seg + Qui</div>
+          <div style="font-size:.72rem;color:rgba(245,240,232,.45);letter-spacing:1px;text-transform:uppercase;">19h30 – 21h00</div>
+        </div>
+        <div style="background:rgba(82,183,136,.1);border:1px solid rgba(82,183,136,.2);border-radius:8px;padding:.875rem 1.25rem;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;color:var(--vc);">A partir</div>
+          <div style="font-size:.72rem;color:rgba(245,240,232,.45);letter-spacing:1px;text-transform:uppercase;">de 10 anos · masc.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMO FUNCIONA -->
+<section id="sobre">
+  <div class="sl">O Projeto</div>
+  <div class="st">Como funciona o <span>Jiu-Jitsu Reformado</span></div>
+  <p style="color:rgba(245,240,232,.55);font-size:.95rem;max-width:560px;line-height:1.75;">Um projeto da nossa igreja para servir a comunidade. Disciplina no tatame, caráter na vida.</p>
+  <div class="como-grid">
+    <div class="como-card"><div class="como-icon">📅</div><h3>Aulas Semanais</h3><p>Segunda e quinta-feira, 19h30. Cada aula começa com um devocional — a Palavra de Deus no centro.</p></div>
+    <div class="como-card"><div class="como-icon">🥋</div><h3>Jiu-Jitsu Brasileiro</h3><p>Arte marcial focada em controle, posicionamento e finalização no solo. Técnica para todos os níveis.</p></div>
+    <div class="como-card"><div class="como-icon">✝</div><h3>Fé & Caráter</h3><p>O esporte como ferramenta de formação: humildade, resiliência e serviço ao próximo como reflexo da fé.</p></div>
+    <div class="como-card"><div class="como-icon">🆓</div><h3>Totalmente Gratuito</h3><p>Sem mensalidade, sem taxa. Aberto a homens e rapazes de 10 anos em diante. Só precisa de comprometimento.</p></div>
+    <div class="como-card"><div class="como-icon">⭐</div><h3>Sistema de Pontos</h3><p>Presença, devocional, campeonatos e ações sociais geram pontos que motivam e engajam os alunos.</p></div>
+    <div class="como-card"><div class="como-icon">🤝</div><h3>Ação Social</h3><p>Cestas básicas, campanhas de alimentos e evangelismo. Jiu-jitsu que serve à cidade e glorifica a Deus.</p></div>
+  </div>
+</section>
+
+<!-- SISTEMA DE PONTUAÇÃO -->
+<div class="bg-ds" id="pontuacao">
+  <div class="pts-inner">
+    <div class="sl">Engajamento</div>
+    <div class="st">Como ganhar <span>Pontos</span></div>
+    <p style="color:rgba(245,240,232,.55);font-size:.9rem;max-width:560px;line-height:1.75;margin-bottom:.25rem;">Os pontos são um sistema de engajamento e reconhecimento — valorizamos muito mais que só a técnica. Eles são levados em conta na hora de progressão de faixa e desbloqueiam recompensas.</p>
+    <div class="pontos-grid">
+      <div class="ponto-card"><div class="ponto-badge">+5</div><div class="ponto-desc">Presença em aula (seg/qui)</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+3</div><div class="ponto-desc">Ministrar o devocional</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+10</div><div class="ponto-desc">Trazer um visitante à aula</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+8</div><div class="ponto-desc">Participar de campeonato</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+20</div><div class="ponto-desc">Subir ao pódio em campeonato</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+5</div><div class="ponto-desc">Juntar 1 kg de alimento</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+15</div><div class="ponto-desc">Montar uma cesta básica</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+2</div><div class="ponto-desc">Participação em evento especial</div></div>
+    </div>
+
+    <div style="margin-top:3rem;">
+      <div class="sl">Recompensas</div>
+      <div class="st">Troque pontos por <span>Prêmios</span></div>
+      <p style="color:rgba(245,240,232,.55);font-size:.9rem;max-width:500px;line-height:1.75;">Acumule pontos e resgate recompensas reais. Uma forma de reconhecer o comprometimento de cada aluno.</p>
+      <div class="rec-grid">
+        <div class="rec-card"><div class="rec-icon">📚</div><div class="rec-nome">Livro Cristão</div><div class="rec-pts">300</div><div class="rec-pts-label">pontos</div><div class="rec-desc">Livro de teologia ou formação cristã à sua escolha</div></div>
+        <div class="rec-card"><div class="rec-icon">👕</div><div class="rec-nome">Camiseta JJR</div><div class="rec-pts">450</div><div class="rec-pts-label">pontos</div><div class="rec-desc">Camiseta oficial do projeto Jiu-Jitsu Reformado</div></div>
+        <div class="rec-card"><div class="rec-icon">🏆</div><div class="rec-nome">Inscrição em Campeonato</div><div class="rec-pts">600</div><div class="rec-pts-label">pontos</div><div class="rec-desc">Taxa de inscrição paga pelo projeto</div></div>
+        <div class="rec-card"><div class="rec-icon">🥋</div><div class="rec-nome">Kimono Branco</div><div class="rec-pts">800</div><div class="rec-pts-label">pontos</div><div class="rec-desc">Kimono oficial para quem não tem condição de comprar</div></div>
+        <div class="rec-card"><div class="rec-icon">🎖️</div><div class="rec-nome">Destaque do Mês</div><div class="rec-pts">500</div><div class="rec-pts-label">pontos</div><div class="rec-desc">Certificado e reconhecimento público no projeto</div></div>
+      </div>
+    </div>
+
+    <!-- RANKING PÚBLICO -->
+    <div id="ranking-pub" style="margin-top:3rem;">
+      <div class="sl">Classificação</div>
+      <div class="st">Ranking de <span>Pontuação</span></div>
+      <p style="color:rgba(245,240,232,.55);font-size:.9rem;max-width:500px;line-height:1.75;">Veja quem está se destacando no projeto!</p>
+      <div class="pts-pub-section">
+        <div class="pts-pub-grid" id="ranking-pub-grid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- METAS -->
+<section id="metas">
+  <div class="sl">Sonhos do Projeto</div>
+  <div class="st">Nossas <span>Metas</span></div>
+  <p style="color:rgba(245,240,232,.55);font-size:.92rem;max-width:480px;line-height:1.75;margin-bottom:1.75rem;">O projeto cresce com a ajuda da comunidade. Veja nossos objetivos.</p>
+  <div id="metas-pub"></div>
+</section>
+
+<!-- INSCRIÇÃO -->
+<section id="inscricao">
+  <div class="sl">Aula Experimental</div>
+  <div class="st">Venha <span>treinar conosco</span></div>
+  <p style="color:rgba(245,240,232,.55);font-size:.92rem;max-width:500px;line-height:1.75;">Preencha abaixo para agendar sua aula teste. Gratuito, sem compromisso.</p>
+  <div class="form-section">
+    <div style="display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+      <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);margin-bottom:3px;">📍 Local</div><div style="font-size:.82rem;color:rgba(245,240,232,.5);">Salão da Igreja Reformada</div></div>
+      <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);margin-bottom:3px;">🕐 Horários</div><div style="font-size:.82rem;color:rgba(245,240,232,.5);">Segunda e Quinta · 19h30 – 21h</div></div>
+    </div>
+    <div id="ins-form">
+      <div class="form-grid">
+        <div class="form-group"><label>Nome Completo *</label><input id="fi-nome" type="text" placeholder="Seu nome"></div>
+        <div class="form-group"><label>Idade *</label><input id="fi-idade" type="number" placeholder="Sua idade" min="10"></div>
+        <div class="form-group"><label>WhatsApp *</label><input id="fi-tel" type="tel" placeholder="(27) 9 0000-0000"></div>
+        <div class="form-group"><label>Dia preferido</label><select id="fi-dia"><option value="">Escolha...</option><option>Segunda-feira</option><option>Quinta-feira</option><option>Qualquer um</option></select></div>
+        <div class="form-group"><label>Experiência em artes marciais</label><select id="fi-exp"><option value="">Escolha...</option><option>Nunca pratiquei</option><option>Já pratiquei mas parei</option><option>Pratico regularmente</option></select></div>
+        <div class="form-group"><label>Como nos conheceu?</label><select id="fi-como"><option value="">Escolha...</option><option>Indicação de amigo</option><option>Pela igreja</option><option>Redes sociais</option><option>Este site</option><option>Outro</option></select></div>
+        <div class="form-group full"><label>Observações (opcional)</label><textarea id="fi-obs" placeholder="Condição física, restrição ou pergunta?"></textarea></div>
+      </div>
+      <button class="btn-primary" style="margin-top:1.5rem;width:100%;padding:15px;" onclick="enviarInscricao()">Quero minha aula teste gratuita →</button>
+    </div>
+    <div class="success-box" id="ins-ok">
+      <h3>🎉 Inscrição Recebida!</h3>
+      <p>Entraremos em contato pelo WhatsApp para confirmar sua aula teste. Até o tatame!</p>
+    </div>
+  </div>
+</section>
+
+<footer style="background:rgba(0,0,0,.45);border-top:1px solid rgba(255,255,255,.05);padding:1.75rem;text-align:center;">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--d);margin-bottom:.4rem;">✝ Jiu-Jitsu Reformado</div>
+  <p style="font-size:.77rem;color:rgba(245,240,232,.3);">Projeto social gratuito da Igreja Reformada · Segunda e Quinta · 19h30</p>
+</footer>
+</div><!-- end landing -->
+
+<div class="toast" id="toast"></div>
+<script type="module" src="./js/landing.js"></script>
+</body>
+</html>
