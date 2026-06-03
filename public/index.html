@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jiu-Jitsu Reformado</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--v:#1a4731;--vm:#2d6a4f;--vc:#52b788;--d:#c9a84c;--dl:#e8c96a;--cr:#f5f0e8;--cd:#ede5d0;--mb:#3d2b1f;--ce:#1c1c1c;--br:#ffff;--vm2:#1e2e26;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Barlow',sans-serif;background:var(--ce);color:var(--cr);overflow-x:hidden;}
+nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(26,71,49,0.97);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.25);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:800;color:var(--d);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:10px;}
+.nav-logo span{color:var(--br);font-weight:300;}
+.nav-links{display:flex;gap:1.5rem;align-items:center;}
+.nav-links a{color:rgba(245,240,232,0.75);text-decoration:none;font-size:0.82rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:color .2s;cursor:pointer;}
+.nav-links a:hover{color:var(--d);}
+.btn-nav{background:var(--d);color:var(--mb);padding:8px 18px;border-radius:4px;font-weight:700;font-size:0.78rem;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:background .2s;}
+.btn-nav:hover{background:var(--dl);}
+#landing{display:block;}#app{display:none;}
+.hero{min-height:100vh;background:linear-gradient(155deg,rgba(26,71,49,0.94) 0%,rgba(28,28,28,0.88) 55%),url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="80" height="80" fill="%231c1c1c"/><circle cx="40" cy="40" r="35" fill="none" stroke="%231a4731" stroke-width="0.4" opacity="0.5"/><circle cx="40" cy="40" r="20" fill="none" stroke="%23c9a84c" stroke-width="0.25" opacity="0.3"/></svg>');background-size:cover,80px 80px;display:flex;align-items:center;padding:120px 2rem 80px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;right:-250px;top:50%;transform:translateY(-50%);width:750px;height:750px;border:1px solid rgba(201,168,76,0.12);border-radius:50%;}
+.hero::after{content:'';position:absolute;right:-120px;top:50%;transform:translateY(-50%);width:500px;height:500px;border:1px solid rgba(82,183,136,0.08);border-radius:50%;}
+.hero-content{max-width:680px;position:relative;z-index:2;}
+.hero-badge{display:inline-block;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.35);color:var(--dl);padding:6px 16px;border-radius:100px;font-size:0.72rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(3rem,7vw,5.5rem);font-weight:900;line-height:.93;margin-bottom:1.5rem;color:var(--br);}
+.hero h1 em{font-style:normal;color:var(--d);display:block;}
+.hero-desc{font-size:1.05rem;font-weight:300;color:rgba(245,240,232,0.72);line-height:1.7;max-width:500px;margin-bottom:2.5rem;}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-primary{background:var(--d);color:var(--mb);padding:14px 30px;border-radius:4px;font-weight:700;font-size:0.88rem;letter-spacing:1.5px;text-transform:uppercase;border:none;cursor:pointer;transition:all .2s;}
+.btn-primary:hover{background:var(--dl);transform:translateY(-2px);}
+.btn-outline{background:transparent;color:var(--cr);padding:14px 30px;border-radius:4px;font-weight:600;font-size:0.88rem;letter-spacing:1.5px;text-transform:uppercase;border:1px solid rgba(245,240,232,0.25);cursor:pointer;transition:all .2s;}
+.btn-outline:hover{border-color:var(--d);color:var(--d);}
+.hero-stats{display:flex;gap:3rem;margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(245,240,232,0.08);}
+.h-stat-num{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;color:var(--d);line-height:1;}
+.h-stat-label{font-size:0.75rem;color:rgba(245,240,232,0.45);font-weight:500;letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+.foto-section{background:rgba(0,0,0,0.35);border-top:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04);}
+.foto-inner{max-width:1100px;margin:0 auto;padding:60px 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.foto-frame{border-radius:12px;overflow:hidden;border:2px solid rgba(201,168,76,0.2);background:rgba(26,71,49,0.3);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;position:relative;}
+.foto-placeholder{text-align:center;color:rgba(245,240,232,0.25);}
+.foto-placeholder .icon{font-size:3rem;margin-bottom:1rem;}
+.foto-placeholder p{font-size:0.85rem;line-height:1.6;}
+.foto-tag{position:absolute;bottom:16px;left:16px;background:rgba(26,71,49,0.9);border:1px solid rgba(201,168,76,0.3);padding:6px 14px;border-radius:6px;font-size:0.75rem;font-weight:600;letter-spacing:1px;color:var(--dl);}
+.foto-text .sl{font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--vc);margin-bottom:.6rem;}
+.foto-text h2{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--br);line-height:1.1;margin-bottom:1rem;}
+.foto-text h2 span{color:var(--d);}
+.foto-text p{font-size:.92rem;color:rgba(245,240,232,.6);line-height:1.75;margin-bottom:.75rem;}
+section{padding:70px 2rem;max-width:1100px;margin:0 auto;}
+.sl{font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--vc);margin-bottom:.6rem;}
+.st{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:700;color:var(--br);line-height:1.1;margin-bottom:.9rem;}
+.st span{color:var(--d);}
+.como-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.25rem;margin-top:2.5rem;}
+.como-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:1.75rem;transition:all .3s;position:relative;overflow:hidden;}
+.como-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--vc),var(--d));}
+.como-card:hover{background:rgba(255,255,255,0.06);transform:translateY(-3px);border-color:rgba(201,168,76,0.25);}
+.como-icon{width:44px;height:44px;background:rgba(82,183,136,0.12);border:1px solid rgba(82,183,136,0.25);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:1.1rem;}
+.como-card h3{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);margin-bottom:.6rem;}
+.como-card p{font-size:.875rem;color:rgba(245,240,232,.55);line-height:1.7;}
+.bg-ds{background:rgba(0,0,0,.28);border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04);padding:70px 0;}
+.pts-inner{max-width:1100px;margin:0 auto;padding:0 2rem;}
+.pontos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.875rem;margin-top:1.75rem;}
+.ponto-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:1.1rem 1.25rem;display:flex;align-items:center;gap:.875rem;transition:all .2s;}
+.ponto-card:hover{background:rgba(255,255,255,.07);border-color:rgba(201,168,76,.22);}
+.ponto-badge{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:800;color:var(--d);min-width:46px;text-align:center;}
+.ponto-desc{font-size:.82rem;color:rgba(245,240,232,.65);line-height:1.4;}
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.1rem;margin-top:2rem;}
+.rec-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:1.5rem;text-align:center;transition:all .25s;cursor:default;}
+.rec-card:hover{background:rgba(255,255,255,.06);border-color:rgba(201,168,76,.25);transform:translateY(-2px);}
+.rec-icon{font-size:2rem;margin-bottom:.75rem;}
+.rec-nome{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);margin-bottom:.4rem;}
+.rec-pts{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:800;color:var(--d);}
+.rec-pts-label{font-size:.65rem;color:rgba(245,240,232,.4);letter-spacing:1px;text-transform:uppercase;}
+.rec-desc{font-size:.78rem;color:rgba(245,240,232,.45);margin-top:.5rem;line-height:1.5;}
+.meta-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:1.6rem;margin-bottom:.875rem;}
+.meta-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.875rem;}
+.meta-title{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);}
+.meta-valor{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;color:var(--d);text-align:right;}
+.meta-percentual{font-size:.72rem;color:rgba(245,240,232,.45);}
+.progress-bar{height:7px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden;margin-bottom:.4rem;}
+.progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--vc),var(--d));transition:width 1s ease;}
+.meta-detail{font-size:.78rem;color:rgba(245,240,232,.45);}
+.form-section{background:linear-gradient(135deg,var(--v) 0%,rgba(26,71,49,.8) 100%);border-radius:14px;padding:2.5rem;border:1px solid rgba(201,168,76,.18);margin-top:3rem;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:1.75rem;}
+.form-group{display:flex;flex-direction:column;gap:.45rem;}
+.form-group.full{grid-column:1/-1;}
+.form-group label{font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(245,240,232,.6);}
+.form-group input,.form-group select,.form-group textarea{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.13);border-radius:6px;padding:11px 14px;color:var(--cr);font-family:'Barlow',sans-serif;font-size:.92rem;transition:border-color .2s;outline:none;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--d);}
+.form-group select option{background:var(--v);}
+.form-group textarea{min-height:90px;resize:vertical;}
+.success-box{display:none;background:rgba(82,183,136,.1);border:1px solid rgba(82,183,136,.3);border-radius:10px;padding:1.5rem;text-align:center;margin-top:1rem;}
+.success-box h3{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--vc);letter-spacing:1px;text-transform:uppercase;margin-bottom:.5rem;}
+.success-box p{font-size:.88rem;color:rgba(245,240,232,.55);}
+/* APP */
+.app-layout{display:flex;min-height:100vh;padding-top:64px;}
+.sidebar{width:230px;background:rgba(20,40,28,0.98);border-right:1px solid rgba(255,255,255,.07);padding:1.25rem 0;position:fixed;top:64px;bottom:0;overflow-y:auto;z-index:100;}
+.sidebar-section{padding:0 .875rem 1rem;}
+.sidebar-label{font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(245,240,232,.25);padding:0 .5rem;margin-bottom:.4rem;}
+.sidebar-item{display:flex;align-items:center;gap:.7rem;padding:9px 11px;border-radius:7px;font-size:.845rem;font-weight:500;color:rgba(245,240,232,.6);cursor:pointer;transition:all .15s;margin-bottom:2px;}
+.sidebar-item:hover{background:rgba(255,255,255,.07);color:var(--cr);}
+.sidebar-item.active{background:rgba(201,168,76,.13);color:var(--dl);border:1px solid rgba(201,168,76,.18);}
+.sidebar-item .icon{font-size:.95rem;width:18px;text-align:center;}
+.main-content{flex:1;margin-left:230px;padding:1.75rem;min-height:calc(100vh - 64px);background:var(--ce);}
+.page-title{font-family:'Barlow Condensed',sans-serif;font-size:1.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);margin-bottom:.2rem;}
+.page-sub{font-size:.845rem;color:rgba(245,240,232,.35);margin-bottom:1.75rem;}
+.cards-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.875rem;margin-bottom:1.75rem;}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:9px;padding:1.1rem;}
+.stat-label{font-size:.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(245,240,232,.35);margin-bottom:.4rem;}
+.stat-value{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:700;color:var(--d);line-height:1;}
+.stat-sub{font-size:.72rem;color:rgba(245,240,232,.35);margin-top:3px;}
+.panel{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:11px;overflow:hidden;margin-bottom:1.4rem;}
+.panel-header{padding:1.1rem 1.4rem;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;}
+.panel-title{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--br);}
+.panel-body{padding:1.4rem;}
+table{width:100%;border-collapse:collapse;font-size:.845rem;}
+th{text-align:left;padding:9px 11px;font-size:.67rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,240,232,.35);border-bottom:1px solid rgba(255,255,255,.05);}
+td{padding:11px;border-bottom:1px solid rgba(255,255,255,.04);color:rgba(245,240,232,.75);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
+.badge-faixa{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:100px;font-size:.67rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.check-btn{width:28px;height:28px;border-radius:6px;border:1px solid rgba(255,255,255,.14);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;font-size:.75rem;color:rgba(245,240,232,.35);}
+.check-btn.checked{background:var(--vc);border-color:var(--vc);color:white;}
+.form-row{display:flex;gap:.875rem;align-items:flex-end;flex-wrap:wrap;}
+.field{display:flex;flex-direction:column;gap:.38rem;flex:1;}
+.field label{font-size:.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(245,240,232,.45);}
+.field input,.field select,.field textarea{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.11);border-radius:6px;padding:9px 13px;color:var(--cr);font-family:'Barlow',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--vc);}
+.field select option{background:#1c2e25;}
+.field textarea{min-height:70px;resize:vertical;}
+.btn-sm{padding:9px 18px;font-size:.77rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;border-radius:6px;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.btn-v{background:var(--vc);color:var(--mb);}
+.btn-v:hover{background:#5ec898;}
+.btn-d{background:var(--d);color:var(--mb);}
+.btn-d:hover{background:var(--dl);}
+.btn-g{background:rgba(255,255,255,.06);color:rgba(245,240,232,.65);border:1px solid rgba(255,255,255,.09);}
+.btn-g:hover{background:rgba(255,255,255,.1);}
+.btn-r{background:rgba(239,68,68,.15);color:#f87171;border:1px solid rgba(239,68,68,.2);}
+.btn-r:hover{background:rgba(239,68,68,.25);}
+.btn-wa{background:#25D366;color:white;border:none;}
+.btn-wa:hover{background:#1ebe5d;}
+.devo-slot{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.06);border-radius:9px;padding:1.1rem;display:flex;align-items:center;gap:.875rem;}
+.devo-day{font-family:'Barlow Condensed',sans-serif;font-size:.77rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--vc);min-width:75px;}
+.devo-name{font-size:.88rem;font-weight:600;color:var(--cr);}
+.devo-date{font-size:.72rem;color:rgba(245,240,232,.38);}
+.rank-item{display:flex;align-items:center;gap:.875rem;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.rank-item:last-child{border-bottom:none;}
+.rank-num{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:rgba(245,240,232,.18);min-width:26px;text-align:right;}
+.rank-num.top{color:var(--d);}
+.avatar{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;color:var(--dl);background:var(--vm);flex-shrink:0;overflow:hidden;border:2px solid rgba(201,168,76,.15);}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.rank-info{flex:1;}
+.rank-name{font-size:.88rem;font-weight:600;color:var(--cr);}
+.rank-belt{font-size:.72rem;color:rgba(245,240,232,.38);}
+.rank-pts{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:700;color:var(--d);}
+.aluno-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin-top:1rem;}
+.aluno-mini{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:1.25rem 1rem;text-align:center;transition:all .2s;cursor:pointer;position:relative;}
+.aluno-mini:hover{background:rgba(255,255,255,.08);border-color:rgba(201,168,76,.25);transform:translateY(-2px);}
+.aluno-mini .av{width:60px;height:60px;font-size:1.2rem;margin:0 auto .75rem;}
+.aluno-mini .am-nome{font-size:.82rem;font-weight:600;color:var(--cr);margin-bottom:.3rem;line-height:1.3;}
+.aluno-mini .am-pts{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:800;color:var(--d);line-height:1;}
+.aluno-mini .am-label{font-size:.62rem;color:rgba(245,240,232,.35);letter-spacing:1px;text-transform:uppercase;}
+.aluno-mini .faixa-stripe{height:4px;border-radius:2px;margin-top:.75rem;}
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--v);border:1px solid var(--vc);color:var(--cr);padding:1rem 1.5rem;border-radius:8px;font-size:.88rem;font-weight:500;z-index:9999;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+/* LOGIN - sem popup automático */
+.login-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:5000;display:none;align-items:center;justify-content:center;}
+.login-overlay.open{display:flex;}
+.login-box{background:#1a2e22;border:1px solid rgba(201,168,76,.25);border-radius:14px;padding:2.5rem;width:100%;max-width:380px;}
+.login-title{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--br);text-align:center;margin-bottom:.4rem;}
+.login-sub{font-size:.82rem;color:rgba(245,240,232,.4);text-align:center;margin-bottom:2rem;}
+.login-field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.1rem;}
+.login-field label{font-size:.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(245,240,232,.5);}
+.login-field input{background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:12px 15px;color:var(--cr);font-family:'Barlow',sans-serif;font-size:.95rem;outline:none;transition:border-color .2s;width:100%;}
+.login-field input:focus{border-color:var(--d);}
+.login-err{font-size:.8rem;color:#f87171;text-align:center;margin-bottom:.75rem;display:none;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:2000;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#1b2e22;border:1px solid rgba(201,168,76,.2);border-radius:13px;padding:2rem;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;}
+.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;}
+.close-btn{background:none;border:none;color:rgba(245,240,232,.35);font-size:1.4rem;cursor:pointer;line-height:1;}
+.close-btn:hover{color:var(--cr);}
+.foto-upload-area{border:2px dashed rgba(255,255,255,.15);border-radius:10px;padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+.foto-upload-area:hover{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.04);}
+.foto-upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.foto-preview{width:80px;height:80px;border-radius:50%;margin:0 auto .75rem;overflow:hidden;border:2px solid rgba(201,168,76,.3);background:var(--vm);display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;color:var(--dl);}
+.foto-preview img{width:100%;height:100%;object-fit:cover;}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+.detail-grid{display:grid;grid-template-columns:200px 1fr;gap:1.75rem;align-items:start;}
+.detail-foto{text-align:center;}
+.detail-av{width:120px;height:120px;border-radius:50%;margin:0 auto 1rem;border:3px solid rgba(201,168,76,.3);overflow:hidden;background:var(--vm);display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:700;color:var(--dl);}
+.detail-av img{width:100%;height:100%;object-fit:cover;}
+.detail-nome{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:var(--br);text-align:center;letter-spacing:1px;}
+.detail-faixa{text-align:center;margin-top:.5rem;}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.845rem;}
+.info-row:last-child{border-bottom:none;}
+.info-label{color:rgba(245,240,232,.4);font-size:.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.info-val{color:var(--cr);font-weight:500;}
+/* CALENDÁRIO */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:1rem;}
+.cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;}
+.cal-day-name{text-align:center;font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(245,240,232,.3);padding:6px 0;}
+.cal-day{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:6px;min-height:60px;position:relative;cursor:pointer;transition:all .15s;}
+.cal-day:hover{background:rgba(255,255,255,.07);border-color:rgba(201,168,76,.2);}
+.cal-day.today{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.06);}
+.cal-day.has-event{border-color:rgba(82,183,136,.3);}
+.cal-day.other-month{opacity:.3;}
+.cal-day-num{font-size:.75rem;font-weight:600;color:rgba(245,240,232,.5);margin-bottom:3px;}
+.cal-day.today .cal-day-num{color:var(--d);font-weight:800;}
+.cal-event{font-size:.6rem;background:rgba(82,183,136,.2);border:1px solid rgba(82,183,136,.3);border-radius:3px;padding:1px 4px;color:var(--vc);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cal-event.aula{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.3);color:var(--dl);}
+.cal-event.camp{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.25);color:#f87171;}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.cal-month{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);}
+/* ANIVERSÁRIOS */
+.bday-alert{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);border-radius:9px;padding:.875rem 1.1rem;display:flex;align-items:center;gap:.875rem;margin-bottom:.5rem;}
+.bday-icon{font-size:1.4rem;}
+.bday-name{font-size:.88rem;font-weight:600;color:var(--cr);}
+.bday-date{font-size:.72rem;color:rgba(245,240,232,.45);}
+/* PROFESSORES */
+.prof-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:1.25rem;display:flex;align-items:center;gap:1rem;margin-bottom:.75rem;}
+.prof-nivel{font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:100px;}
+.nivel-admin{background:rgba(201,168,76,.15);color:var(--dl);border:1px solid rgba(201,168,76,.25);}
+.nivel-prof{background:rgba(82,183,136,.12);color:var(--vc);border:1px solid rgba(82,183,136,.2);}
+.nivel-assist{background:rgba(255,255,255,.07);color:rgba(245,240,232,.55);border:1px solid rgba(255,255,255,.1);}
+/* RELATÓRIO */
+@media print{
+  .sidebar,.app-nav-bar,.btn-sm,.panel-header button{display:none!important;}
+  .main-content{margin-left:0!important;}
+  body{background:white!important;color:#111!important;}
+  .panel{border:1px solid #ccc!important;background:white!important;}
+  th,td{color:#111!important;}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.hero-content>*{animation:fadeUp .6s ease backwards;}
+.hero-content>*:nth-child(1){animation-delay:.1s;}
+.hero-content>*:nth-child(2){animation-delay:.2s;}
+.hero-content>*:nth-child(3){animation-delay:.3s;}
+.hero-content>*:nth-child(4){animation-delay:.4s;}
+.hero-content>*:nth-child(5){animation-delay:.5s;}
+/* PONTUAÇÃO PÚBLICA */
+.pts-pub-section{background:rgba(26,71,49,.15);border:1px solid rgba(201,168,76,.15);border-radius:14px;padding:2rem;margin-top:2rem;}
+.pts-pub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.875rem;margin-top:1.25rem;}
+.pts-pub-card{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:1rem;text-align:center;}
+.pts-pub-pos{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:700;color:rgba(245,240,232,.3);letter-spacing:1px;margin-bottom:.5rem;}
+.pts-pub-pos.gold{color:var(--d);}
+.pts-pub-pts{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:800;color:var(--d);}
+.pts-pub-nome{font-size:.8rem;font-weight:600;color:var(--cr);margin-top:.25rem;}
+.pts-pub-faixa{font-size:.65rem;color:rgba(245,240,232,.35);margin-top:.2rem;}
+@media(max-width:768px){.form-grid{grid-template-columns:1fr;}.foto-inner{grid-template-columns:1fr;}.detail-grid{grid-template-columns:1fr;}.sidebar{transform:translateX(-100%);}.main-content{margin-left:0;}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN OVERLAY (não abre automaticamente) -->
+<div class="login-overlay" id="login-overlay">
+  <div class="login-box">
+    <div style="text-align:center;margin-bottom:1.5rem;font-size:2rem;">✝</div>
+    <div class="login-title">Painel do Professor</div>
+    <div class="login-sub">Acesso restrito aos professores e coordenadores</div>
+    <div class="login-field"><label>Usuário</label><input id="login-user" type="text" placeholder="professor"></div>
+    <div class="login-field"><label>Senha</label><input id="login-pass" type="password" placeholder="••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="login-err" id="login-err">Usuário ou senha incorretos</div>
+    <button class="btn-primary" style="width:100%;padding:13px;margin-top:.5rem;" onclick="doLogin()">Entrar no Painel →</button>
+    <button class="btn-outline" style="width:100%;padding:11px;margin-top:.75rem;" onclick="closeLogin()">← Voltar ao site</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="nav-logo"><span style="color:var(--d);">✝</span>Jiu-Jitsu<span> Reformado</span></div>
+  <div class="nav-links">
+    <a onclick="scrollTo2('sobre')">Sobre</a>
+    <a onclick="scrollTo2('pontuacao')">Pontuação</a>
+    <a onclick="scrollTo2('ranking-pub')">Ranking</a>
+    <a onclick="scrollTo2('metas')">Metas</a>
+    <a onclick="scrollTo2('inscricao')">Inscrição</a>
+    <button class="btn-nav" onclick="openLogin()">Painel 🥋</button>
+  </div>
+</nav>
+
+<!-- ==== LANDING ==== -->
+<div id="landing">
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">✝ Igreja Reformada · Projeto Social Gratuito</div>
+    <h1>Jiu-Jitsu<em>Reformado</em></h1>
+    <p class="hero-desc">Treinamento gratuito de jiu-jítsu brasileiro para homens e rapazes a partir de 10 anos. Disciplina, fé e comunidade — formando caráter através das artes marciais.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="scrollTo2('inscricao')">Quero me inscrever</button>
+      <button class="btn-outline" onclick="scrollTo2('sobre')">Conhecer o projeto</button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="h-stat-num">100%</div><div class="h-stat-label">Gratuito</div></div>
+      <div><div class="h-stat-num">2×</div><div class="h-stat-label">Semana</div></div>
+      <div><div class="h-stat-num">+10</div><div class="h-stat-label">Anos</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOTO DO PROJETO -->
+<div class="foto-section">
+  <div class="foto-inner">
+    <div class="foto-frame" id="landing-foto-frame" style="cursor:pointer;" onclick="document.getElementById('landing-foto-input').click()">
+      <div class="foto-placeholder" id="foto-placeholder">
+        <div class="icon">📸</div>
+        <p>Clique para adicionar<br>foto do projeto</p>
+      </div>
+      <img id="foto-projeto" src="" alt="Projeto na Igreja" style="display:none;width:100%;height:100%;object-fit:cover;">
+      <div class="foto-tag">📍 Igreja Reformada</div>
+      <input type="file" id="landing-foto-input" accept="image/*" style="display:none;" onchange="handleLandingFoto(event)">
+    </div>
+    <div class="foto-text">
+      <div class="sl">Nossa história</div>
+      <h2>Nascido dentro da <span>Igreja</span></h2>
+      <p>O Jiu-Jitsu Reformado surgiu do desejo de servir a comunidade com excelência, usando o esporte como ferramenta de transformação. Mais do que golpes e quedas — é sobre humildade, respeito e a centralidade de Cristo em cada aspecto da vida.</p>
+      <p>As aulas acontecem sempre <strong style="color:var(--dl);">segunda e quinta-feira às 19h30</strong>, cada uma abrindo com um breve devocional conduzido por um dos próprios participantes.</p>
+      <div style="display:flex;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;">
+        <div style="background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:.875rem 1.25rem;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;color:var(--d);">Seg + Qui</div>
+          <div style="font-size:.72rem;color:rgba(245,240,232,.45);letter-spacing:1px;text-transform:uppercase;">19h30 – 21h00</div>
+        </div>
+        <div style="background:rgba(82,183,136,.1);border:1px solid rgba(82,183,136,.2);border-radius:8px;padding:.875rem 1.25rem;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;color:var(--vc);">A partir</div>
+          <div style="font-size:.72rem;color:rgba(245,240,232,.45);letter-spacing:1px;text-transform:uppercase;">de 10 anos · masc.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMO FUNCIONA -->
+<section id="sobre">
+  <div class="sl">O Projeto</div>
+  <div class="st">Como funciona o <span>Jiu-Jitsu Reformado</span></div>
+  <p style="color:rgba(245,240,232,.55);font-size:.95rem;max-width:560px;line-height:1.75;">Um projeto da nossa igreja para servir a comunidade. Disciplina no tatame, caráter na vida.</p>
+  <div class="como-grid">
+    <div class="como-card"><div class="como-icon">📅</div><h3>Aulas Semanais</h3><p>Segunda e quinta-feira, 19h30. Cada aula começa com um devocional — a Palavra de Deus no centro.</p></div>
+    <div class="como-card"><div class="como-icon">🥋</div><h3>Jiu-Jitsu Brasileiro</h3><p>Arte marcial focada em controle, posicionamento e finalização no solo. Técnica para todos os níveis.</p></div>
+    <div class="como-card"><div class="como-icon">✝</div><h3>Fé & Caráter</h3><p>O esporte como ferramenta de formação: humildade, resiliência e serviço ao próximo como reflexo da fé.</p></div>
+    <div class="como-card"><div class="como-icon">🆓</div><h3>Totalmente Gratuito</h3><p>Sem mensalidade, sem taxa. Aberto a homens e rapazes de 10 anos em diante. Só precisa de comprometimento.</p></div>
+    <div class="como-card"><div class="como-icon">⭐</div><h3>Sistema de Pontos</h3><p>Presença, devocional, campeonatos e ações sociais geram pontos que motivam e engajam os alunos.</p></div>
+    <div class="como-card"><div class="como-icon">🤝</div><h3>Ação Social</h3><p>Cestas básicas, campanhas de alimentos e evangelismo. Jiu-jitsu que serve à cidade e glorifica a Deus.</p></div>
+  </div>
+</section>
+
+<!-- SISTEMA DE PONTUAÇÃO -->
+<div class="bg-ds" id="pontuacao">
+  <div class="pts-inner">
+    <div class="sl">Engajamento</div>
+    <div class="st">Como ganhar <span>Pontos</span></div>
+    <p style="color:rgba(245,240,232,.55);font-size:.9rem;max-width:560px;line-height:1.75;margin-bottom:.25rem;">Os pontos são um sistema de engajamento e reconhecimento — valorizamos muito mais que só a técnica. Eles são levados em conta na hora de progressão de faixa e desbloqueiam recompensas.</p>
+    <div class="pontos-grid">
+      <div class="ponto-card"><div class="ponto-badge">+5</div><div class="ponto-desc">Presença em aula (seg/qui)</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+3</div><div class="ponto-desc">Ministrar o devocional</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+10</div><div class="ponto-desc">Trazer um visitante à aula</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+8</div><div class="ponto-desc">Participar de campeonato</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+20</div><div class="ponto-desc">Subir ao pódio em campeonato</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+5</div><div class="ponto-desc">Juntar 1 kg de alimento</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+15</div><div class="ponto-desc">Montar uma cesta básica</div></div>
+      <div class="ponto-card"><div class="ponto-badge">+2</div><div class="ponto-desc">Participação em evento especial</div></div>
+    </div>
+
+    <div style="margin-top:3rem;">
+      <div class="sl">Recompensas</div>
+      <div class="st">Troque pontos por <span>Prêmios</span></div>
+      <p style="color:rgba(245,240,232,.55);font-size:.9rem;max-width:500px;line-height:1.75;">Acumule pontos e resgate recompensas reais. Uma forma de reconhecer o comprometimento de cada aluno.</p>
+      <div class="rec-grid">
+        <div class="rec-card"><div class="rec-icon">📚</div><div class="rec-nome">Livro Cristão</div><div class="rec-pts">300</div><div class="rec-pts-label">pontos</div><div class="rec-desc">Livro de teologia ou formação cristã à sua escolha</div></div>
+        <div class="rec-card"><div class="rec-icon">👕</div><div class="rec-nome">Camiseta JJR</div><div class="rec-pts">450</div><div class="rec-pts-label">pontos</div><div class="rec-desc">Camiseta oficial do projeto Jiu-Jitsu Reformado</div></div>
+        <div class="rec-card"><div class="rec-icon">🏆</div><div class="rec-nome">Inscrição em Campeonato</div><div class="rec-pts">600</div><div class="rec-pts-label">pontos</div><div class="rec-desc">Taxa de inscrição paga pelo projeto</div></div>
+        <div class="rec-card"><div class="rec-icon">🥋</div><div class="rec-nome">Kimono Branco</div><div class="rec-pts">800</div><div class="rec-pts-label">pontos</div><div class="rec-desc">Kimono oficial para quem não tem condição de comprar</div></div>
+        <div class="rec-card"><div class="rec-icon">🎖️</div><div class="rec-nome">Destaque do Mês</div><div class="rec-pts">500</div><div class="rec-pts-label">pontos</div><div class="rec-desc">Certificado e reconhecimento público no projeto</div></div>
+      </div>
+    </div>
+
+    <!-- RANKING PÚBLICO -->
+    <div id="ranking-pub" style="margin-top:3rem;">
+      <div class="sl">Classificação</div>
+      <div class="st">Ranking de <span>Pontuação</span></div>
+      <p style="color:rgba(245,240,232,.55);font-size:.9rem;max-width:500px;line-height:1.75;">Veja quem está se destacando no projeto!</p>
+      <div class="pts-pub-section">
+        <div class="pts-pub-grid" id="ranking-pub-grid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- METAS -->
+<section id="metas">
+  <div class="sl">Sonhos do Projeto</div>
+  <div class="st">Nossas <span>Metas</span></div>
+  <p style="color:rgba(245,240,232,.55);font-size:.92rem;max-width:480px;line-height:1.75;margin-bottom:1.75rem;">O projeto cresce com a ajuda da comunidade. Veja nossos objetivos.</p>
+  <div id="metas-pub"></div>
+</section>
+
+<!-- INSCRIÇÃO -->
+<section id="inscricao">
+  <div class="sl">Aula Experimental</div>
+  <div class="st">Venha <span>treinar conosco</span></div>
+  <p style="color:rgba(245,240,232,.55);font-size:.92rem;max-width:500px;line-height:1.75;">Preencha abaixo para agendar sua aula teste. Gratuito, sem compromisso.</p>
+  <div class="form-section">
+    <div style="display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+      <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);margin-bottom:3px;">📍 Local</div><div style="font-size:.82rem;color:rgba(245,240,232,.5);">Salão da Igreja Reformada</div></div>
+      <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--br);margin-bottom:3px;">🕐 Horários</div><div style="font-size:.82rem;color:rgba(245,240,232,.5);">Segunda e Quinta · 19h30 – 21h</div></div>
+    </div>
+    <div id="ins-form">
+      <div class="form-grid">
+        <div class="form-group"><label>Nome Completo *</label><input id="fi-nome" type="text" placeholder="Seu nome"></div>
+        <div class="form-group"><label>Idade *</label><input id="fi-idade" type="number" placeholder="Sua idade" min="10"></div>
+        <div class="form-group"><label>WhatsApp *</label><input id="fi-tel" type="tel" placeholder="(27) 9 0000-0000"></div>
+        <div class="form-group"><label>Dia preferido</label><select id="fi-dia"><option value="">Escolha...</option><option>Segunda-feira</option><option>Quinta-feira</option><option>Qualquer um</option></select></div>
+        <div class="form-group"><label>Experiência em artes marciais</label><select id="fi-exp"><option value="">Escolha...</option><option>Nunca pratiquei</option><option>Já pratiquei mas parei</option><option>Pratico regularmente</option></select></div>
+        <div class="form-group"><label>Como nos conheceu?</label><select id="fi-como"><option value="">Escolha...</option><option>Indicação de amigo</option><option>Pela igreja</option><option>Redes sociais</option><option>Este site</option><option>Outro</option></select></div>
+        <div class="form-group full"><label>Observações (opcional)</label><textarea id="fi-obs" placeholder="Condição física, restrição ou pergunta?"></textarea></div>
+      </div>
+      <button class="btn-primary" style="margin-top:1.5rem;width:100%;padding:15px;" onclick="enviarInscricao()">Quero minha aula teste gratuita →</button>
+    </div>
+    <div class="success-box" id="ins-ok">
+      <h3>🎉 Inscrição Recebida!</h3>
+      <p>Entraremos em contato pelo WhatsApp para confirmar sua aula teste. Até o tatame!</p>
+    </div>
+  </div>
+</section>
+
+<footer style="background:rgba(0,0,0,.45);border-top:1px solid rgba(255,255,255,.05);padding:1.75rem;text-align:center;">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--d);margin-bottom:.4rem;">✝ Jiu-Jitsu Reformado</div>
+  <p style="font-size:.77rem;color:rgba(245,240,232,.3);">Projeto social gratuito da Igreja Reformada · Segunda e Quinta · 19h30</p>
+</footer>
+</div><!-- end landing -->
+
+<!-- ==== APP ==== -->
+<div id="app">
+<nav id="app-nav" class="app-nav-bar" style="display:none;">
+  <div class="nav-logo"><span style="color:var(--d);">✝</span>JJR<span> Painel</span></div>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <span style="font-size:.78rem;color:rgba(245,240,232,.4);" id="user-label">Professor</span>
+    <button class="btn-nav" onclick="logout()">← Sair</button>
+  </div>
+</nav>
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Geral</div>
+      <div class="sidebar-item active" data-tab="dashboard" onclick="showTab('dashboard',this)"><span class="icon">📊</span>Dashboard</div>
+      <div class="sidebar-item" data-tab="alunos" onclick="showTab('alunos',this)"><span class="icon">👥</span>Alunos</div>
+      <div class="sidebar-item" data-tab="ranking" onclick="showTab('ranking',this)"><span class="icon">🏅</span>Ranking</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Aulas</div>
+      <div class="sidebar-item" data-tab="presenca" onclick="showTab('presenca',this)"><span class="icon">✅</span>Presença</div>
+      <div class="sidebar-item" data-tab="relatorio" onclick="showTab('relatorio',this)"><span class="icon">📊</span>Relatório</div>
+      <div class="sidebar-item" data-tab="calendario" onclick="showTab('calendario',this)"><span class="icon">📅</span>Calendário</div>
+      <div class="sidebar-item" data-tab="pontos" onclick="showTab('pontos',this)"><span class="icon">⭐</span>Dar Pontos</div>
+      <div class="sidebar-item" data-tab="devocional" onclick="showTab('devocional',this)"><span class="icon">✝</span>Devocional</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Projeto</div>
+      <div class="sidebar-item" data-tab="professores" onclick="showTab('professores',this)"><span class="icon">👨‍🏫</span>Professores</div>
+      <div class="sidebar-item" data-tab="metas-adm" onclick="showTab('metas-adm',this)"><span class="icon">🎯</span>Metas</div>
+      <div class="sidebar-item" data-tab="campeonatos" onclick="showTab('campeonatos',this)"><span class="icon">🏆</span>Campeonatos</div>
+      <div class="sidebar-item" data-tab="cestas" onclick="showTab('cestas',this)"><span class="icon">🥫</span>Cestas Básicas</div>
+      <div class="sidebar-item" data-tab="recompensas" onclick="showTab('recompensas',this)"><span class="icon">🎁</span>Recompensas</div>
+      <div class="sidebar-item" data-tab="inscricoes" onclick="showTab('inscricoes',this)"><span class="icon">📋</span>Inscrições</div>
+      <div class="sidebar-item" data-tab="configuracoes" onclick="showTab('configuracoes',this)"><span class="icon">⚙️</span>Configurações</div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+
+    <!-- DASHBOARD -->
+    <div id="tab-dashboard" class="tab-content active">
+      <div class="page-title">Dashboard</div>
+      <div class="page-sub" id="dash-date">Visão geral do projeto</div>
+
+      <!-- ANIVERSÁRIOS ALERTA -->
+      <div id="bday-section" style="margin-bottom:1.25rem;display:none;">
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem;">
+          <span style="font-size:1.1rem;">🎂</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--d);">Aniversários</span>
+        </div>
+        <div id="bday-list"></div>
+      </div>
+
+      <div class="cards-row">
+        <div class="stat-card"><div class="stat-label">Alunos Ativos</div><div class="stat-value" id="ds-total">0</div><div class="stat-sub">cadastrados</div></div>
+        <div class="stat-card"><div class="stat-label">Média Presença</div><div class="stat-value" id="ds-freq">0%</div><div class="stat-sub">último mês</div></div>
+        <div class="stat-card"><div class="stat-label">Cestas Mês</div><div class="stat-value" id="ds-cestas">0</div><div class="stat-sub" id="ds-cestas-sub">meta: 50</div></div>
+        <div class="stat-card"><div class="stat-label">Inscrições Pend.</div><div class="stat-value" id="ds-ins">0</div><div class="stat-sub">aguardando</div></div>
+        <div class="stat-card"><div class="stat-label">Pontos Dados</div><div class="stat-value" id="ds-pts">0</div><div class="stat-sub">total acumulado</div></div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-bottom:1.4rem;">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">✝ Devocional da Semana</span><button class="btn-sm btn-g" style="font-size:.72rem;" onclick="showTab('devocional',null)">Ver todos</button></div>
+          <div class="panel-body" id="dash-devo" style="display:flex;flex-direction:column;gap:.75rem;"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">⚠ Baixa Frequência</span></div>
+          <div class="panel-body" id="dash-alertas"></div>
+        </div>
+      </div>
+
+      <!-- RANKING VISUAL com fotos e pontuação visível -->
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">🏅 Ranking de Pontos</span><button class="btn-sm btn-g" style="font-size:.72rem;" onclick="showTab('ranking',null)">Ver completo</button></div>
+        <div class="panel-body">
+          <div class="aluno-cards-grid" id="dash-cards"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALUNOS -->
+    <div id="tab-alunos" class="tab-content">
+      <div class="page-title">Alunos</div>
+      <div class="page-sub">Gerencie os alunos do projeto</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">Cadastrar Novo Aluno</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="flex:3;min-width:160px;"><label>Nome Completo</label><input id="al-nome" type="text" placeholder="Nome do aluno"></div>
+            <div class="field" style="min-width:120px;"><label>Telefone/WhatsApp</label><input id="al-tel" type="text" placeholder="(27) 9 0000-0000"></div>
+            <div class="field" style="max-width:80px;"><label>Idade</label><input id="al-idade" type="number" placeholder=""></div>
+            <div class="field" style="max-width:130px;"><label>Nascimento</label><input id="al-nasc" type="date" title="Data de nascimento para aniversário"></div>
+            <div class="field" style="min-width:120px;"><label>Faixa</label>
+              <select id="al-faixa"><option value="branca">Branca</option><option value="azul">Azul</option><option value="roxa">Roxa</option><option value="marrom">Marrom</option><option value="preta">Preta</option></select>
+            </div>
+            <div class="field" style="max-width:90px;"><label>Grau</label>
+              <select id="al-grau"><option value="0">—</option><option value="1">1°</option><option value="2">2°</option><option value="3">3°</option><option value="4">4°</option></select>
+            </div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-v" onclick="cadastrarAluno()">+ Adicionar</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Lista de Alunos</span><span style="font-size:.8rem;color:rgba(245,240,232,.35);" id="total-al">0</span></div>
+        <div style="overflow-x:auto;"><table><thead><tr><th>Aluno</th><th>Faixa / Grau</th><th>Pontos</th><th>Freq.</th><th>WhatsApp</th><th>Ações</th></tr></thead><tbody id="alunos-tb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- RANKING -->
+    <div id="tab-ranking" class="tab-content">
+      <div class="page-title">Ranking de Pontos</div>
+      <div class="page-sub">Classificação geral por pontuação acumulada</div>
+      <div class="panel"><div class="panel-body" id="ranking-full" style="padding:.5rem 1.25rem;"></div></div>
+    </div>
+
+    <!-- PRESENÇA -->
+    <div id="tab-presenca" class="tab-content">
+      <div class="page-title">Registrar Presença</div>
+      <div class="page-sub">Chamada da aula de hoje</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-body">
+          <div class="form-row">
+            <div class="field"><label>Data</label><input id="pres-data" type="date"></div>
+            <div class="field"><label>Dia</label><select id="pres-dia"><option value="seg">Segunda-feira</option><option value="qui">Quinta-feira</option></select></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="salvarPresenca()">Salvar Presença (+5 pts)</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Chamada</span><span style="font-size:.85rem;color:var(--vc);" id="pres-count">0 presentes</span></div>
+        <div style="overflow-x:auto;"><table><thead><tr><th>Aluno</th><th>Faixa</th><th>Presença</th></tr></thead><tbody id="chamada-tb"></tbody></table></div>
+      </div>
+    </div>
+
+    <!-- RELATÓRIO DE PRESENÇA -->
+    <div id="tab-relatorio" class="tab-content">
+      <div class="page-title">Relatório de Presença</div>
+      <div class="page-sub">Gere relatórios por período para impressão ou PDF</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field"><label>Data Início</label><input id="rel-inicio" type="date"></div>
+            <div class="field"><label>Data Fim</label><input id="rel-fim" type="date"></div>
+            <div class="field" style="max-width:180px;"><label>Aluno (opcional)</label><select id="rel-aluno"><option value="">Todos os alunos</option></select></div>
+            <div class="field" style="justify-content:flex-end;gap:.5rem;flex-direction:row;align-items:flex-end;">
+              <button class="btn-sm btn-v" onclick="gerarRelatorio()">📊 Gerar</button>
+              <button class="btn-sm btn-g" onclick="imprimirRelatorio()">🖨️ Imprimir/PDF</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="relatorio-resultado"></div>
+    </div>
+
+    <!-- CALENDÁRIO -->
+    <div id="tab-calendario" class="tab-content">
+      <div class="page-title">Calendário</div>
+      <div class="page-sub">Aulas, eventos e campeonatos</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">Adicionar Evento</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="flex:2;min-width:180px;"><label>Título do Evento</label><input id="ev-titulo" type="text" placeholder="Ex: Campeonato Regional"></div>
+            <div class="field"><label>Data</label><input id="ev-data" type="date"></div>
+            <div class="field" style="max-width:140px;"><label>Tipo</label>
+              <select id="ev-tipo">
+                <option value="aula">Aula Regular</option>
+                <option value="evento">Evento Especial</option>
+                <option value="camp">Campeonato</option>
+              </select>
+            </div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-v" onclick="addEvento()">+ Adicionar</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-body">
+          <div class="cal-nav">
+            <button class="btn-sm btn-g" onclick="calNav(-1)">‹ Anterior</button>
+            <span class="cal-month" id="cal-month-label"></span>
+            <button class="btn-sm btn-g" onclick="calNav(1)">Próximo ›</button>
+          </div>
+          <div class="cal-header">
+            <div class="cal-day-name">Dom</div><div class="cal-day-name">Seg</div><div class="cal-day-name">Ter</div>
+            <div class="cal-day-name">Qua</div><div class="cal-day-name">Qui</div><div class="cal-day-name">Sex</div><div class="cal-day-name">Sáb</div>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PONTOS -->
+    <div id="tab-pontos" class="tab-content">
+      <div class="page-title">Dar Pontos</div>
+      <div class="page-sub">Atribua pontos por ações especiais</div>
+      <div class="panel">
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="flex:2;min-width:180px;"><label>Aluno</label><select id="pt-aluno"></select></div>
+            <div class="field" style="flex:2;min-width:200px;"><label>Motivo</label>
+              <select id="pt-motivo">
+                <option value="3">+3 — Ministrou devocional</option>
+                <option value="10">+10 — Trouxe visitante</option>
+                <option value="8">+8 — Participou de campeonato</option>
+                <option value="20">+20 — Pódio em campeonato</option>
+                <option value="5">+5 — Juntou 1 kg de alimento</option>
+                <option value="15">+15 — Montou cesta básica</option>
+                <option value="2">+2 — Participação especial</option>
+              </select>
+            </div>
+            <div class="field" style="max-width:90px;"><label>Pts extras</label><input id="pt-extra" type="number" value="0" min="0"></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="darPontos()">Dar Pontos ⭐</button></div>
+          </div>
+          <div id="pts-log" style="margin-top:1.25rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEVOCIONAL -->
+    <div id="tab-devocional" class="tab-content">
+      <div class="page-title">Escala de Devocional</div>
+      <div class="page-sub">A Palavra abre cada aula — segunda e quinta</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">Agendar</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="min-width:170px;"><label>Aluno</label><select id="dv-aluno"></select></div>
+            <div class="field"><label>Dia</label><select id="dv-dia"><option value="seg">Segunda</option><option value="qui">Quinta</option></select></div>
+            <div class="field"><label>Data</label><input id="dv-data" type="date"></div>
+            <div class="field" style="flex:2;"><label>Passagem</label><input id="dv-passagem" type="text" placeholder="Ex: João 3:16"></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-v" onclick="agendarDevo()">Agendar ✝</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Próximos Devocionais</span></div>
+        <div class="panel-body"><div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;" id="devo-list"></div></div>
+      </div>
+    </div>
+
+    <!-- PROFESSORES -->
+    <div id="tab-professores" class="tab-content">
+      <div class="page-title">Professores</div>
+      <div class="page-sub">Cadastro e níveis de acesso</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">Cadastrar Professor</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="flex:2;min-width:160px;"><label>Nome</label><input id="pf-nome" type="text" placeholder="Nome do professor"></div>
+            <div class="field"><label>Usuário</label><input id="pf-user" type="text" placeholder="login"></div>
+            <div class="field"><label>Senha</label><input id="pf-pass" type="password" placeholder="••••"></div>
+            <div class="field" style="max-width:150px;"><label>Nível de Acesso</label>
+              <select id="pf-nivel">
+                <option value="admin">Admin (total)</option>
+                <option value="prof">Professor</option>
+                <option value="assist">Assistente</option>
+              </select>
+            </div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-v" onclick="cadastrarProf()">+ Adicionar</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">Equipe</span></div>
+        <div class="panel-body" id="prof-list"></div>
+      </div>
+    </div>
+
+    <!-- METAS ADMIN -->
+    <div id="tab-metas-adm" class="tab-content">
+      <div class="page-title">Metas do Projeto</div>
+      <div class="page-sub">Atualize o progresso das metas públicas</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">Nova Meta</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="flex:3;min-width:200px;"><label>Título</label><input id="mt-titulo" type="text" placeholder="Ex: Tatame novo"></div>
+            <div class="field"><label>Meta (R$)</label><input id="mt-meta" type="number" placeholder="3500"></div>
+            <div class="field"><label>Arrecadado (R$)</label><input id="mt-atual" type="number" placeholder="0"></div>
+            <div class="field" style="min-width:160px;"><label>Detalhe</label><input id="mt-detalhe" type="text" placeholder="Descrição curta"></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-v" onclick="addMeta()">+ Adicionar</button></div>
+          </div>
+        </div>
+      </div>
+      <div id="metas-adm-list"></div>
+    </div>
+
+    <!-- CAMPEONATOS -->
+    <div id="tab-campeonatos" class="tab-content">
+      <div class="page-title">Campeonatos</div>
+      <div class="page-sub">Registre participações e resultados</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="min-width:170px;"><label>Aluno</label><select id="camp-aluno"></select></div>
+            <div class="field" style="flex:2;min-width:180px;"><label>Campeonato</label><input id="camp-nome" type="text" placeholder="Nome do campeonato"></div>
+            <div class="field"><label>Resultado</label>
+              <select id="camp-res"><option value="8">Participou (+8 pts)</option><option value="20_3">🥉 3º Lugar (+20 pts)</option><option value="20_2">🥈 2º Lugar (+20 pts)</option><option value="20_1">🥇 Campeão (+20 pts)</option></select>
+            </div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="regCamp()">Registrar 🏆</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel"><div style="overflow-x:auto;"><table><thead><tr><th>Aluno</th><th>Campeonato</th><th>Resultado</th><th>Pontos</th></tr></thead><tbody id="camp-tb"><tr><td colspan="4" style="text-align:center;color:rgba(245,240,232,.25);padding:2rem;">Nenhum registro</td></tr></tbody></table></div></div>
+    </div>
+
+    <!-- CESTAS -->
+    <div id="tab-cestas" class="tab-content">
+      <div class="page-title">Cestas Básicas</div>
+      <div class="page-sub">Registre contribuições para a campanha social</div>
+      <div class="cards-row">
+        <div class="stat-card"><div class="stat-label">Total Cestas</div><div class="stat-value" id="c-total">0</div></div>
+        <div class="stat-card"><div class="stat-label">Kg de Alimentos</div><div class="stat-value" id="c-kg">0</div></div>
+      </div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="min-width:170px;"><label>Aluno</label><select id="cesta-aluno"></select></div>
+            <div class="field"><label>Tipo</label><select id="cesta-tipo"><option value="kg">Alimentos (kg)</option><option value="cesta">Cesta Básica</option></select></div>
+            <div class="field" style="max-width:100px;"><label>Qtd</label><input id="cesta-qtd" type="number" value="1" min="1"></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-v" onclick="regCesta()">Registrar 🥫</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel"><div style="overflow-x:auto;"><table><thead><tr><th>Aluno</th><th>Tipo</th><th>Qtd</th><th>Pontos</th></tr></thead><tbody id="cestas-tb"><tr><td colspan="4" style="text-align:center;color:rgba(245,240,232,.25);padding:2rem;">Nenhuma contribuição</td></tr></tbody></table></div></div>
+    </div>
+
+    <!-- RECOMPENSAS -->
+    <div id="tab-recompensas" class="tab-content">
+      <div class="page-title">Recompensas</div>
+      <div class="page-sub">Resgate de prêmios por pontos acumulados</div>
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;">
+            <div class="field" style="min-width:170px;"><label>Aluno</label><select id="rec-aluno"></select></div>
+            <div class="field" style="flex:2;"><label>Recompensa</label>
+              <select id="rec-item">
+                <option value="300|Livro Cristão">300 pts — Livro Cristão</option>
+                <option value="450|Camiseta JJR">450 pts — Camiseta JJR</option>
+                <option value="500|Destaque do Mês">500 pts — Destaque do Mês</option>
+                <option value="600|Inscrição em Campeonato">600 pts — Inscrição em Campeonato</option>
+                <option value="800|Kimono Branco">800 pts — Kimono Branco</option>
+              </select>
+            </div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="regRecompensa()">Resgatar 🎁</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel"><div style="overflow-x:auto;"><table><thead><tr><th>Aluno</th><th>Recompensa</th><th>Pts Gastos</th><th>Data</th></tr></thead><tbody id="rec-tb"><tr><td colspan="4" style="text-align:center;color:rgba(245,240,232,.25);padding:2rem;">Nenhum resgate ainda</td></tr></tbody></table></div></div>
+    </div>
+
+    <!-- INSCRIÇÕES -->
+    <div id="tab-inscricoes" class="tab-content">
+      <div class="page-title">Inscrições Recebidas</div>
+      <div class="page-sub">Interessados em aula teste</div>
+      <div class="panel"><div style="overflow-x:auto;"><table><thead><tr><th>Nome</th><th>Idade</th><th>WhatsApp</th><th>Dia</th><th>Exp.</th><th>Status</th><th>Ação</th></tr></thead><tbody id="ins-tb"><tr><td colspan="7" style="text-align:center;color:rgba(245,240,232,.25);padding:2rem;">Nenhuma inscrição</td></tr></tbody></table></div></div>
+    </div>
+
+    <!-- CONFIGURAÇÕES -->
+    <div id="tab-configuracoes" class="tab-content">
+      <div class="page-title">Configurações</div>
+      <div class="page-sub">Personalize o projeto e faça upload de fotos</div>
+
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">📸 Foto da Landing Page</span></div>
+        <div class="panel-body">
+          <p style="font-size:.85rem;color:rgba(245,240,232,.5);margin-bottom:1rem;">Faça upload da foto principal que aparece na página inicial do site.</p>
+          <div style="display:flex;gap:1.5rem;align-items:flex-start;flex-wrap:wrap;">
+            <div style="width:200px;height:150px;border-radius:10px;overflow:hidden;border:2px solid rgba(201,168,76,.2);background:rgba(26,71,49,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <img id="cfg-foto-preview" src="" alt="" style="display:none;width:100%;height:100%;object-fit:cover;">
+              <span id="cfg-foto-placeholder" style="font-size:2rem;">📸</span>
+            </div>
+            <div>
+              <div class="foto-upload-area" style="width:220px;" onclick="document.getElementById('cfg-foto-input').click()">
+                <input type="file" id="cfg-foto-input" accept="image/*" style="display:none;" onchange="handleCfgFoto(event)">
+                <div style="font-size:1.5rem;margin-bottom:.5rem;">⬆️</div>
+                <div style="font-size:.82rem;color:rgba(245,240,232,.5);">Clique para selecionar<br>imagem (JPG, PNG)</div>
+              </div>
+              <p style="font-size:.72rem;color:rgba(245,240,232,.3);margin-top:.75rem;">A foto será exibida na seção "Nossa história" da landing page.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:1.25rem;">
+        <div class="panel-header"><span class="panel-title">⚙️ Informações do Projeto</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;gap:.875rem;">
+            <div class="field" style="flex:2;min-width:200px;"><label>Nome do Projeto</label><input id="cfg-nome" type="text" value="Jiu-Jitsu Reformado"></div>
+            <div class="field"><label>Horário das Aulas</label><input id="cfg-horario" type="text" value="19h30 – 21h00"></div>
+            <div class="field" style="flex:2;"><label>Endereço</label><input id="cfg-endereco" type="text" placeholder="Endereço da igreja"></div>
+          </div>
+          <div style="margin-top:1rem;">
+            <button class="btn-sm btn-v" onclick="salvarConfig()">💾 Salvar Configurações</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><span class="panel-title">🔑 Alterar Senha</span></div>
+        <div class="panel-body">
+          <div class="form-row" style="flex-wrap:wrap;gap:.875rem;">
+            <div class="field"><label>Senha Atual</label><input id="cfg-pass-atual" type="password" placeholder="••••"></div>
+            <div class="field"><label>Nova Senha</label><input id="cfg-pass-nova" type="password" placeholder="••••"></div>
+            <div class="field"><label>Confirmar Nova Senha</label><input id="cfg-pass-conf" type="password" placeholder="••••"></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="alterarSenha()">🔑 Alterar</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+</div><!-- end app -->
+
+<!-- MODAL DETALHE DO ALUNO -->
+<div class="modal-overlay" id="modal-aluno">
+  <div class="modal">
+    <div class="modal-title"><span id="modal-nome-title">Aluno</span><button class="close-btn" onclick="closeModal()">×</button></div>
+    <div class="detail-grid">
+      <div class="detail-foto">
+        <div class="detail-av" id="modal-av"></div>
+        <div class="detail-nome" id="modal-nome"></div>
+        <div class="detail-faixa" id="modal-faixa"></div>
+        <div style="margin-top:1rem;">
+          <div class="foto-upload-area" onclick="triggerFotoUpload()">
+            <input type="file" id="foto-input" accept="image/*" onchange="handleFotoUpload(event)">
+            <div style="font-size:.8rem;color:rgba(245,240,232,.4);">📸 Clique para adicionar foto</div>
+          </div>
+        </div>
+        <div style="margin-top:.875rem;" id="modal-wa-btn"></div>
+      </div>
+      <div>
+        <div style="margin-bottom:1rem;" id="modal-stats"></div>
+        <div style="margin-bottom:1rem;">
+          <div style="font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(245,240,232,.35);margin-bottom:.75rem;">Editar Cadastro</div>
+          <div class="form-row" style="flex-wrap:wrap;gap:.75rem;">
+            <div class="field" style="flex:2;"><label>Nome</label><input id="ed-nome" type="text"></div>
+            <div class="field"><label>Telefone/WhatsApp</label><input id="ed-tel" type="text"></div>
+          </div>
+          <div class="form-row" style="flex-wrap:wrap;gap:.75rem;margin-top:.75rem;">
+            <div class="field"><label>Idade</label><input id="ed-idade" type="number"></div>
+            <div class="field"><label>Nascimento</label><input id="ed-nasc" type="date"></div>
+            <div class="field"><label>Faixa</label>
+              <select id="ed-faixa"><option value="branca">Branca</option><option value="azul">Azul</option><option value="roxa">Roxa</option><option value="marrom">Marrom</option><option value="preta">Preta</option></select>
+            </div>
+            <div class="field"><label>Grau</label>
+              <select id="ed-grau"><option value="0">—</option><option value="1">1°</option><option value="2">2°</option><option value="3">3°</option><option value="4">4°</option></select>
+            </div>
+          </div>
+          <div class="form-row" style="margin-top:.75rem;">
+            <div class="field"><label>Observações</label><textarea id="ed-obs"></textarea></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+          <button class="btn-sm btn-v" onclick="salvarEdicao()">💾 Salvar</button>
+          <button class="btn-sm btn-d" onclick="promoverModal()">↑ Promover Grau</button>
+          <button class="btn-sm btn-r" onclick="removerModal()">✕ Remover</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==== STATE ====
+let alunos=[
+  {id:1,nome:'João Silva',tel:'(27)99100-1234',idade:22,nasc:'2002-03-15',faixa:'azul',grau:2,pontos:387,presencas:42,faltas:8,obs:'',foto:''},
+  {id:2,nome:'Pedro Alves',tel:'(27)99200-5678',idade:17,nasc:'2007-06-02',faixa:'branca',grau:3,pontos:165,presencas:30,faltas:4,obs:'',foto:''},
+  {id:3,nome:'Marcos Oliveira',tel:'(27)99300-9012',idade:28,nasc:'1996-11-20',faixa:'azul',grau:1,pontos:210,presencas:38,faltas:10,obs:'',foto:''},
+  {id:4,nome:'Lucas Ferreira',tel:'(27)99400-3456',idade:15,nasc:'2009-08-10',faixa:'branca',grau:1,pontos:80,presencas:18,faltas:6,obs:'',foto:''},
+  {id:5,nome:'Rafael Costa',tel:'(27)99500-7890',idade:35,nasc:'1989-06-05',faixa:'roxa',grau:0,pontos:520,presencas:60,faltas:5,obs:'Lesão no joelho direito',foto:''},
+  {id:6,nome:'André Santos',tel:'(27)99600-1122',idade:19,nasc:'2005-12-25',faixa:'branca',grau:0,pontos:45,presencas:9,faltas:12,obs:'',foto:''},
+];
+let devocionais=[
+  {dia:'seg',data:'2025-06-02',aluno:'João Silva',passagem:'Salmos 46'},
+  {dia:'qui',data:'2025-06-05',aluno:'Pedro Alves',passagem:'Mateus 5:3-12'},
+  {dia:'seg',data:'2025-06-09',aluno:'Rafael Costa',passagem:'Romanos 8:28'},
+  {dia:'qui',data:'2025-06-12',aluno:'Marcos Oliveira',passagem:'Efésios 2:8-9'},
+];
+let campeonatos=[];
+let cestas=[];
+let inscricoes=[];
+let recompensas=[];
+let metas=[
+  {titulo:'🥋 Tatame Novo',meta:3500,atual:2400,detalhe:'Tatame EVA 40mm · 30 peças'},
+  {titulo:'👕 Uniformes para Alunos',meta:1800,atual:680,detalhe:'10 kimonos brancos'},
+  {titulo:'🏆 Campeonato Regional',meta:1200,atual:960,detalhe:'8 atletas'},
+  {titulo:'🥫 Cestas — Junho',meta:0,atual:0,detalhe:'50 cestas básicas',tipo:'cestas',metaN:50,atualN:23},
+];
+let professores=[
+  {id:1,nome:'Kenedy Castro',user:'professor',pass:'1234',nivel:'admin'},
+];
+let eventos=[];
+let nextId=7;
+let nextProfId=2;
+let editingId=null;
+let presencaState={};
+let calYear=new Date().getFullYear();
+let calMonth=new Date().getMonth();
+let presencaLog=[];
+
+// ==== HELPERS ====
+const FC={branca:{bg:'white',txt:'#333'},azul:{bg:'#2563eb',txt:'white'},roxa:{bg:'#7c3aed',txt:'white'},marrom:{bg:'#92400e',txt:'white'},preta:{bg:'#111',txt:'white'}};
+const FL={branca:'Branca',azul:'Azul',roxa:'Roxa',marrom:'Marrom',preta:'Preta'};
+function ini(name){return name.split(' ').slice(0,2).map(n=>n[0]||'').join('').toUpperCase();}
+function fmtDate(s){if(!s)return'';const[y,m,d]=s.split('-');return`${d}/${m}`;}
+function fmtDateFull(s){if(!s)return'';const[y,m,d]=s.split('-');return`${d}/${m}/${y}`;}
+function today(){return new Date().toISOString().split('T')[0];}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function pct(a){const t=a.presencas+a.faltas;return t>0?Math.round((a.presencas/t)*100):0;}
+function faixaBadge(faixa,grau){const c=FC[faixa]||FC.branca;const g=grau>0?'|'.repeat(grau):'';return`<span class="badge-faixa" style="background:${c.bg};color:${c.txt};border:1px solid rgba(0,0,0,.15);">${FL[faixa]}${g?`<span style="color:var(--d);font-size:.6rem;margin-left:3px;">${g}</span>`:''}</span>`;}
+function avatarEl(a,size){const s=size||36;return a.foto?`<div class="avatar" style="width:${s}px;height:${s}px;"><img src="${a.foto}" alt="${a.nome}"></div>`:`<div class="avatar" style="width:${s}px;height:${s}px;font-size:${Math.round(s*.3)}px;">${ini(a.nome)}</div>`;}
+function popSel(id){const s=document.getElementById(id);if(!s)return;s.innerHTML=alunos.map(a=>`<option value="${a.id}">${a.nome}</option>`).join('');}
+function popAllSels(){['pt-aluno','dv-aluno','camp-aluno','cesta-aluno','rec-aluno','rel-aluno'].forEach(popSel);}
+function cleanTel(tel){return tel.replace(/\D/g,'');}
+function waLink(tel){const n=cleanTel(tel);return`https://wa.me/55${n}`;}
+
+// ==== ANIVERSÁRIOS ====
+function checkBdays(){
+  const now=new Date();
+  const todayMD=`${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  const nextWeek=new Date(now);nextWeek.setDate(now.getDate()+7);
+  const bdayAlunos=alunos.filter(a=>{
+    if(!a.nasc)return false;
+    const parts=a.nasc.split('-');
+    const md=`${parts[1]}-${parts[2]}`;
+    const bdayThisYear=new Date(now.getFullYear(),parseInt(parts[1])-1,parseInt(parts[2]));
+    return bdayThisYear>=now&&bdayThisYear<=nextWeek;
+  });
+  const sec=document.getElementById('bday-section');
+  const list=document.getElementById('bday-list');
+  if(!sec||!list)return;
+  if(bdayAlunos.length>0){
+    sec.style.display='block';
+    list.innerHTML=bdayAlunos.map(a=>{
+      const parts=a.nasc.split('-');
+      const bdayDate=`${parts[2]}/${parts[1]}`;
+      const isToday=`${parts[1]}-${parts[2]}`===todayMD;
+      return`<div class="bday-alert">
+        <span class="bday-icon">${isToday?'🎂':'🎁'}</span>
+        <div>
+          <div class="bday-name">${a.nome} ${isToday?'<span style="color:var(--d);font-size:.75rem;">— HOJE!</span>':''}</div>
+          <div class="bday-date">Aniversário: ${bdayDate} · ${a.idade} anos · <a href="${waLink(a.tel)}" target="_blank" style="color:#25D366;text-decoration:none;">💬 Parabenizar no WhatsApp</a></div>
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    sec.style.display='none';
+  }
+}
+
+// ==== LOGIN ====
+function openLogin(){document.getElementById('login-overlay').classList.add('open');}
+function closeLogin(){document.getElementById('login-overlay').classList.remove('open');}
+function doLogin(){
+  const u=document.getElementById('login-user').value.trim();
+  const p=document.getElementById('login-pass').value;
+  const err=document.getElementById('login-err');
+  const prof=professores.find(x=>x.user===u&&x.pass===p);
+  if(prof){
+    closeLogin();
+    document.getElementById('landing').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('main-nav').style.display='none';
+    document.getElementById('app-nav').style.display='flex';
+    document.getElementById('user-label').textContent=`${prof.nome} · ${prof.nivel==='admin'?'Admin':prof.nivel==='prof'?'Professor':'Assistente'}`;
+    initApp();
+  } else {
+    err.style.display='block';
+    setTimeout(()=>err.style.display='none',2500);
+  }
+}
+function logout(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('landing').style.display='block';
+  document.getElementById('main-nav').style.display='flex';
+  document.getElementById('app-nav').style.display='none';
+}
+
+// ==== TABS ====
+function showTab(name,el){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(i=>i.classList.remove('active'));
+  const tab=document.getElementById('tab-'+name);
+  if(tab)tab.classList.add('active');
+  if(el)el.classList.add('active');
+  else{const found=document.querySelector(`.sidebar-item[data-tab="${name}"]`);if(found)found.classList.add('active');}
+  renderTab(name);
+}
+
+function renderTab(n){
+  if(n==='dashboard')renderDash();
+  if(n==='alunos')renderAlunos();
+  if(n==='ranking')renderRanking();
+  if(n==='presenca')renderChamada();
+  if(n==='relatorio'){popSel('rel-aluno');const ri=document.getElementById('rel-aluno');if(ri)ri.insertAdjacentHTML('afterbegin','<option value="">Todos os alunos</option>');}
+  if(n==='calendario')renderCalendario();
+  if(n==='pontos')popSel('pt-aluno');
+  if(n==='devocional'){popSel('dv-aluno');renderDevocionais();}
+  if(n==='campeonatos'){popSel('camp-aluno');renderCamp();}
+  if(n==='cestas'){popSel('cesta-aluno');renderCestas();}
+  if(n==='recompensas'){popSel('rec-aluno');renderRecomp();}
+  if(n==='inscricoes')renderIns();
+  if(n==='metas-adm')renderMetasAdm();
+  if(n==='professores')renderProfs();
+  if(n==='configuracoes')renderConfig();
+}
+
+// ==== INIT APP ====
+function initApp(){
+  const d=new Date();
+  document.getElementById('dash-date').textContent=`Hoje, ${d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long'})}`;
+  const els=['pres-data','dv-data','ev-data'];
+  els.forEach(id=>{const e=document.getElementById(id);if(e)e.value=today();});
+  // Set relatório defaults
+  const ri=document.getElementById('rel-inicio');
+  const rf=document.getElementById('rel-fim');
+  if(ri){const d1=new Date();d1.setDate(1);ri.value=d1.toISOString().split('T')[0];}
+  if(rf)rf.value=today();
+  renderDash();renderMetasPub();renderRankingPub();renderAlunos();popAllSels();
+}
+
+// ==== DASHBOARD ====
+function renderDash(){
+  checkBdays();
+  document.getElementById('ds-total').textContent=alunos.length;
+  const avgFreq=alunos.length?Math.round(alunos.reduce((s,a)=>s+pct(a),0)/alunos.length):0;
+  document.getElementById('ds-freq').textContent=avgFreq+'%';
+  document.getElementById('ds-ins').textContent=inscricoes.length;
+  const totalPts=alunos.reduce((s,a)=>s+a.pontos,0);
+  document.getElementById('ds-pts').textContent=totalPts;
+  const totalCestas=cestas.filter(c=>c.tipo==='cesta').reduce((s,c)=>s+c.qtd,0);
+  document.getElementById('ds-cestas').textContent=totalCestas;
+
+  const dashDevo=document.getElementById('dash-devo');
+  if(dashDevo){
+    const prox=devocionais.slice(0,2);
+    dashDevo.innerHTML=prox.length?prox.map(d=>`<div class="devo-slot"><span class="devo-day">${d.dia==='seg'?'Segunda':'Quinta'}</span><div><div class="devo-name">${d.aluno}</div><div class="devo-date">${fmtDate(d.data)} · ${d.passagem}</div></div></div>`).join(''):'<p style="font-size:.85rem;color:rgba(245,240,232,.35);">Nenhum devocional agendado</p>';
+  }
+
+  const alertEl=document.getElementById('dash-alertas');
+  if(alertEl){
+    const low=alunos.filter(a=>(a.presencas+a.faltas)>5&&pct(a)<65);
+    alertEl.innerHTML=low.length?low.map(a=>`<div style="display:flex;align-items:center;gap:.75rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);">${avatarEl(a,32)}<div style="flex:1;"><div style="font-size:.85rem;font-weight:600;">${a.nome}</div><div style="font-size:.72rem;color:rgba(245,240,232,.38);">${pct(a)}% de frequência · ${a.faltas} faltas</div></div><a href="${waLink(a.tel)}" target="_blank" style="font-size:.72rem;color:#25D366;font-weight:600;text-decoration:none;">💬 WA</a></div>`).join(''):'<p style="font-size:.85rem;color:rgba(245,240,232,.35);">✅ Todos com frequência regular</p>';
+  }
+
+  const cards=document.getElementById('dash-cards');
+  if(cards){
+    const sorted=[...alunos].sort((a,b)=>b.pontos-a.pontos).slice(0,12);
+    cards.innerHTML=sorted.map((a,i)=>{
+      const c=FC[a.faixa]||FC.branca;
+      return`<div class="aluno-mini" onclick="openModal(${a.id})">
+        ${i<3?`<div style="position:absolute;top:8px;right:8px;font-size:.75rem;background:rgba(201,168,76,.15);color:var(--d);border-radius:4px;padding:2px 6px;font-weight:700;">#${i+1}</div>`:''}
+        ${avatarEl(a,60)}
+        <div class="am-nome">${a.nome.split(' ')[0]}</div>
+        <div class="am-pts">${a.pontos}</div>
+        <div class="am-label">pontos</div>
+        <div class="faixa-stripe" style="background:${c.bg};border:1px solid rgba(255,255,255,.1);"></div>
+      </div>`;
+    }).join('');
+  }
+}
+
+// ==== RANKING PÚBLICO ====
+function renderRankingPub(){
+  const el=document.getElementById('ranking-pub-grid');
+  if(!el)return;
+  const sorted=[...alunos].sort((a,b)=>b.pontos-a.pontos).slice(0,10);
+  const medals=['🥇','🥈','🥉'];
+  el.innerHTML=sorted.map((a,i)=>{
+    const c=FC[a.faixa]||FC.branca;
+    return`<div class="pts-pub-card">
+      <div class="pts-pub-pos ${i<3?'gold':''}">${medals[i]||`#${i+1}`}</div>
+      ${avatarEl(a,44)}
+      <div class="pts-pub-pts" style="margin-top:.5rem;">${a.pontos}</div>
+      <div class="pts-pub-nome">${a.nome.split(' ')[0]}</div>
+      <div class="pts-pub-faixa">${FL[a.faixa]}</div>
+    </div>`;
+  }).join('');
+}
+
+// ==== METAS PÚB ====
+function renderMetasPub(){
+  const el=document.getElementById('metas-pub');
+  if(!el)return;
+  el.innerHTML=metas.map(m=>{
+    const isN=m.tipo==='cestas';
+    const cur=isN?m.atualN:m.atual;
+    const tot=isN?m.metaN:m.meta;
+    const p=tot>0?Math.min(100,Math.round((cur/tot)*100)):0;
+    const valStr=isN?`${cur} cestas`:`R$ ${cur.toLocaleString('pt-BR')}`;
+    const metStr=isN?`meta: ${tot} cestas`:`meta: R$ ${tot.toLocaleString('pt-BR')}`;
+    return`<div class="meta-card"><div class="meta-header"><div><div class="meta-title">${m.titulo}</div><div class="meta-detail">${m.detalhe}</div></div><div class="meta-valor">${valStr}<br><span class="meta-percentual">${metStr}</span></div></div><div class="progress-bar"><div class="progress-fill" style="width:${p}%"></div></div><div style="display:flex;justify-content:space-between;"><span class="meta-detail">${p}% alcançado</span><span class="meta-detail">${isN?`Faltam ${tot-cur} cestas`:`Faltam R$ ${(tot-cur).toLocaleString('pt-BR')}`}</span></div></div>`;
+  }).join('');
+}
+
+// ==== ALUNOS ====
+function renderAlunos(){
+  const tb=document.getElementById('alunos-tb');
+  if(!tb)return;
+  document.getElementById('total-al').textContent=`${alunos.length} alunos`;
+  tb.innerHTML=alunos.map(a=>{
+    const p2=pct(a);
+    const telNum=cleanTel(a.tel);
+    return`<tr>
+      <td><div style="display:flex;align-items:center;gap:8px;">${avatarEl(a,32)}<div><div style="font-weight:600;">${a.nome}</div><div style="font-size:.72rem;color:rgba(245,240,232,.38);">${a.idade} anos${a.nasc?` · 🎂 ${fmtDate(a.nasc)}`:''}  </div></div></div></td>
+      <td>${faixaBadge(a.faixa,a.grau)}</td>
+      <td><span style="font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;color:var(--d);">${a.pontos}</span></td>
+      <td><div style="font-size:.82rem;">${p2}%</div><div style="width:55px;height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:3px;"><div style="width:${p2}%;height:100%;background:${p2>=75?'var(--vc)':p2>=50?'var(--d)':'#ef4444'};border-radius:2px;"></div></div></td>
+      <td><a href="${waLink(a.tel)}" target="_blank" style="display:inline-flex;align-items:center;gap:4px;background:#25D366;color:white;padding:4px 10px;border-radius:5px;font-size:.72rem;font-weight:700;text-decoration:none;letter-spacing:.5px;">💬 WhatsApp</a></td>
+      <td><button class="btn-sm btn-g" style="font-size:.7rem;padding:6px 10px;" onclick="openModal(${a.id})">✏ Editar</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function cadastrarAluno(){
+  const nome=document.getElementById('al-nome').value.trim();
+  if(!nome){toast('❌ Informe o nome');return;}
+  alunos.push({id:nextId++,nome,tel:document.getElementById('al-tel').value.trim()||'—',idade:parseInt(document.getElementById('al-idade').value)||0,nasc:document.getElementById('al-nasc').value||'',faixa:document.getElementById('al-faixa').value,grau:parseInt(document.getElementById('al-grau').value)||0,pontos:0,presencas:0,faltas:0,obs:'',foto:''});
+  ['al-nome','al-tel','al-idade','al-nasc'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  renderAlunos();renderDash();renderRanking();renderRankingPub();popAllSels();
+  toast(`✅ ${nome} cadastrado!`);
+}
+
+// ==== MODAL DETALHE ====
+function openModal(id){
+  editingId=id;
+  const a=alunos.find(x=>x.id===id);
+  if(!a)return;
+  document.getElementById('modal-nome-title').textContent=a.nome;
+  document.getElementById('modal-nome').textContent=a.nome;
+  const avEl=document.getElementById('modal-av');
+  avEl.innerHTML=a.foto?`<img src="${a.foto}" alt="${a.nome}">`:`${ini(a.nome)}`;
+  document.getElementById('modal-faixa').innerHTML=faixaBadge(a.faixa,a.grau);
+  document.getElementById('ed-nome').value=a.nome;
+  document.getElementById('ed-tel').value=a.tel;
+  document.getElementById('ed-idade').value=a.idade;
+  document.getElementById('ed-nasc').value=a.nasc||'';
+  document.getElementById('ed-faixa').value=a.faixa;
+  document.getElementById('ed-grau').value=a.grau;
+  document.getElementById('ed-obs').value=a.obs||'';
+  const p2=pct(a);
+  document.getElementById('modal-stats').innerHTML=`
+    <div class="info-row"><span class="info-label">Pontos</span><span class="info-val" style="color:var(--d);font-weight:700;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;">${a.pontos}</span></div>
+    <div class="info-row"><span class="info-label">Presenças</span><span class="info-val">${a.presencas}</span></div>
+    <div class="info-row"><span class="info-label">Faltas</span><span class="info-val">${a.faltas}</span></div>
+    <div class="info-row"><span class="info-label">Frequência</span><span class="info-val" style="color:${p2>=75?'var(--vc)':p2>=50?'var(--d)':'#f87171'};">${p2}%</span></div>
+    ${a.nasc?`<div class="info-row"><span class="info-label">Aniversário</span><span class="info-val">🎂 ${fmtDate(a.nasc)}</span></div>`:''}
+    ${a.obs?`<div class="info-row"><span class="info-label">Obs</span><span class="info-val" style="font-size:.82rem;color:rgba(245,240,232,.5);">${a.obs}</span></div>`:''}
+  `;
+  // WhatsApp button
+  const waBtn=document.getElementById('modal-wa-btn');
+  if(waBtn&&a.tel&&a.tel!=='—'){
+    waBtn.innerHTML=`<a href="${waLink(a.tel)}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;background:#25D366;color:white;padding:9px 14px;border-radius:7px;font-size:.8rem;font-weight:700;text-decoration:none;letter-spacing:.5px;">💬 Contato WhatsApp</a>`;
+  }
+  document.getElementById('modal-aluno').classList.add('open');
+}
+
+function closeModal(){document.getElementById('modal-aluno').classList.remove('open');editingId=null;}
+
+function salvarEdicao(){
+  const a=alunos.find(x=>x.id===editingId);if(!a)return;
+  a.nome=document.getElementById('ed-nome').value.trim()||a.nome;
+  a.tel=document.getElementById('ed-tel').value.trim();
+  a.idade=parseInt(document.getElementById('ed-idade').value)||a.idade;
+  a.nasc=document.getElementById('ed-nasc').value||a.nasc;
+  a.faixa=document.getElementById('ed-faixa').value;
+  a.grau=parseInt(document.getElementById('ed-grau').value)||0;
+  a.obs=document.getElementById('ed-obs').value;
+  closeModal();renderAlunos();renderDash();renderRanking();renderRankingPub();popAllSels();
+  toast(`💾 ${a.nome} atualizado!`);
+}
+
+function promoverModal(){
+  const a=alunos.find(x=>x.id===editingId);if(!a)return;
+  const ordem=['branca','azul','roxa','marrom','preta'];
+  if(a.grau<4){a.grau++;}
+  else if(ordem.indexOf(a.faixa)<ordem.length-1){a.faixa=ordem[ordem.indexOf(a.faixa)+1];a.grau=0;}
+  closeModal();renderAlunos();renderDash();renderRanking();
+  toast(`🎉 ${a.nome} promovido! ${FL[a.faixa]} ${a.grau>0?a.grau+'° grau':''}`);
+}
+
+function removerModal(){
+  const a=alunos.find(x=>x.id===editingId);if(!a)return;
+  alunos=alunos.filter(x=>x.id!==editingId);
+  closeModal();renderAlunos();renderDash();renderRanking();renderRankingPub();popAllSels();
+  toast('Aluno removido');
+}
+
+// ==== FOTO UPLOAD ====
+function triggerFotoUpload(){document.getElementById('foto-input').click();}
+function handleFotoUpload(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    const a=alunos.find(x=>x.id===editingId);
+    if(!a)return;
+    a.foto=ev.target.result;
+    const avEl=document.getElementById('modal-av');
+    avEl.innerHTML=`<img src="${a.foto}" alt="${a.nome}">`;
+    renderAlunos();renderDash();renderRankingPub();
+    toast('📸 Foto atualizada!');
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleLandingFoto(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    const img=document.getElementById('foto-projeto');
+    const ph=document.getElementById('foto-placeholder');
+    img.src=ev.target.result;
+    img.style.display='block';
+    if(ph)ph.style.display='none';
+    // Sync config preview
+    const cfgPrev=document.getElementById('cfg-foto-preview');
+    const cfgPh=document.getElementById('cfg-foto-placeholder');
+    if(cfgPrev){cfgPrev.src=ev.target.result;cfgPrev.style.display='block';}
+    if(cfgPh)cfgPh.style.display='none';
+    toast('📸 Foto da landing page atualizada!');
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleCfgFoto(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    const img=document.getElementById('foto-projeto');
+    const ph=document.getElementById('foto-placeholder');
+    if(img){img.src=ev.target.result;img.style.display='block';}
+    if(ph)ph.style.display='none';
+    const cfgPrev=document.getElementById('cfg-foto-preview');
+    const cfgPh=document.getElementById('cfg-foto-placeholder');
+    if(cfgPrev){cfgPrev.src=ev.target.result;cfgPrev.style.display='block';}
+    if(cfgPh)cfgPh.style.display='none';
+    toast('📸 Foto atualizada na landing page!');
+  };
+  reader.readAsDataURL(file);
+}
+
+// ==== RANKING ====
+function renderRanking(){
+  const el=document.getElementById('ranking-full');if(!el)return;
+  const sorted=[...alunos].sort((a,b)=>b.pontos-a.pontos);
+  el.innerHTML=sorted.map((a,i)=>`
+    <div class="rank-item">
+      <span class="rank-num ${i<3?'top':''}">${i+1}</span>
+      ${avatarEl(a,36)}
+      <div class="rank-info"><div class="rank-name">${a.nome}</div><div class="rank-belt">${faixaBadge(a.faixa,a.grau)}</div></div>
+      <div style="text-align:right;">
+        <div class="rank-pts">${a.pontos} pts</div>
+        <div style="font-size:.7rem;color:rgba(245,240,232,.35);">${a.presencas} presenças</div>
+      </div>
+      <a href="${waLink(a.tel)}" target="_blank" style="background:#25D366;color:white;padding:5px 10px;border-radius:5px;font-size:.7rem;font-weight:700;text-decoration:none;margin-left:.5rem;">💬</a>
+    </div>`).join('');
+}
+
+// ==== PRESENÇA ====
+function renderChamada(){
+  const tb=document.getElementById('chamada-tb');if(!tb)return;
+  presencaState={};
+  alunos.forEach(a=>presencaState[a.id]=false);
+  tb.innerHTML=alunos.map(a=>`<tr><td><div style="display:flex;align-items:center;gap:8px;">${avatarEl(a,30)}${a.nome}</div></td><td>${faixaBadge(a.faixa,a.grau)}</td><td><button class="check-btn" id="chk-${a.id}" onclick="togPres(${a.id})">✓</button></td></tr>`).join('');
+  updPresCount();
+}
+function togPres(id){presencaState[id]=!presencaState[id];const b=document.getElementById('chk-'+id);if(b)b.classList.toggle('checked',presencaState[id]);updPresCount();}
+function updPresCount(){const c=Object.values(presencaState).filter(Boolean).length;const e=document.getElementById('pres-count');if(e)e.textContent=`${c} presentes`;}
+function salvarPresenca(){
+  const data=document.getElementById('pres-data').value||today();
+  const dia=document.getElementById('pres-dia').value;
+  let c=0;
+  Object.entries(presencaState).forEach(([id,p])=>{
+    const a=alunos.find(x=>x.id===parseInt(id));if(!a)return;
+    if(p){a.presencas++;a.pontos+=5;c++;presencaLog.push({data,dia,alunoId:a.id,nome:a.nome,presente:true});}
+    else{a.faltas++;presencaLog.push({data,dia,alunoId:a.id,nome:a.nome,presente:false});}
+  });
+  presencaState={};renderChamada();renderAlunos();renderDash();renderRanking();renderRankingPub();
+  toast(`✅ Presença salva! ${c} alunos presentes (+5 pts cada)`);
+}
+
+// ==== RELATÓRIO ====
+function gerarRelatorio(){
+  const inicio=document.getElementById('rel-inicio').value;
+  const fim=document.getElementById('rel-fim').value;
+  const alunoId=document.getElementById('rel-aluno').value;
+  if(!inicio||!fim){toast('❌ Informe o período');return;}
+  const logs=presencaLog.filter(l=>l.data>=inicio&&l.data<=fim&&(alunoId===''||l.alunoId===parseInt(alunoId)));
+  const el=document.getElementById('relatorio-resultado');
+  if(!el)return;
+  if(!logs.length){el.innerHTML='<div class="panel"><div class="panel-body" style="text-align:center;color:rgba(245,240,232,.35);padding:2rem;">Nenhum registro no período selecionado</div></div>';return;}
+  // Agrupar por aluno
+  const byAluno={};
+  logs.forEach(l=>{
+    if(!byAluno[l.alunoId])byAluno[l.alunoId]={nome:l.nome,presencas:0,faltas:0,datas:[]};
+    if(l.presente)byAluno[l.alunoId].presencas++;
+    else byAluno[l.alunoId].faltas++;
+    byAluno[l.alunoId].datas.push({data:l.data,presente:l.presente});
+  });
+  const rows=Object.values(byAluno).map(r=>{
+    const total=r.presencas+r.faltas;
+    const freq=total>0?Math.round((r.presencas/total)*100):0;
+    return`<tr><td style="font-weight:600;">${r.nome}</td><td style="color:var(--vc);">${r.presencas}</td><td style="color:#f87171;">${r.faltas}</td><td>${total}</td><td style="color:${freq>=75?'var(--vc)':freq>=50?'var(--d)':'#f87171'};font-weight:700;">${freq}%</td></tr>`;
+  }).join('');
+  el.innerHTML=`<div class="panel" id="print-area">
+    <div class="panel-header">
+      <span class="panel-title">📊 Relatório: ${fmtDateFull(inicio)} a ${fmtDateFull(fim)}</span>
+      <span style="font-size:.8rem;color:rgba(245,240,232,.4);">${logs.length} registros</span>
+    </div>
+    <div style="overflow-x:auto;">
+      <table><thead><tr><th>Aluno</th><th>Presenças</th><th>Faltas</th><th>Total Aulas</th><th>Frequência</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+    </div>
+  </div>`;
+}
+
+function imprimirRelatorio(){
+  gerarRelatorio();
+  setTimeout(()=>window.print(),300);
+}
+
+// ==== CALENDÁRIO ====
+function renderCalendario(){
+  const meses=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  document.getElementById('cal-month-label').textContent=`${meses[calMonth]} ${calYear}`;
+  const grid=document.getElementById('cal-grid');
+  if(!grid)return;
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const daysInPrev=new Date(calYear,calMonth,0).getDate();
+  const todayStr=today();
+  let cells='';
+  // Prev month days
+  for(let i=firstDay-1;i>=0;i--){
+    cells+=`<div class="cal-day other-month"><div class="cal-day-num">${daysInPrev-i}</div></div>`;
+  }
+  // Current month
+  for(let d=1;d<=daysInMonth;d++){
+    const dateStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=dateStr===todayStr;
+    const dayOfWeek=new Date(calYear,calMonth,d).getDay();
+    const isAula=dayOfWeek===1||dayOfWeek===4; // seg=1, qui=4
+    const dayEvents=eventos.filter(e=>e.data===dateStr);
+    let evHtml='';
+    if(isAula)evHtml+=`<div class="cal-event aula">🥋 Aula</div>`;
+    dayEvents.forEach(e=>{
+      evHtml+=`<div class="cal-event ${e.tipo}">${e.titulo}</div>`;
+    });
+    const hasEv=isAula||dayEvents.length>0;
+    cells+=`<div class="cal-day${isToday?' today':''}${hasEv?' has-event':''}"><div class="cal-day-num">${d}</div>${evHtml}</div>`;
+  }
+  // Next month fill
+  const totalCells=Math.ceil((firstDay+daysInMonth)/7)*7;
+  for(let d=1;d<=totalCells-(firstDay+daysInMonth);d++){
+    cells+=`<div class="cal-day other-month"><div class="cal-day-num">${d}</div></div>`;
+  }
+  grid.innerHTML=cells;
+}
+
+function calNav(dir){
+  calMonth+=dir;
+  if(calMonth>11){calMonth=0;calYear++;}
+  if(calMonth<0){calMonth=11;calYear--;}
+  renderCalendario();
+}
+
+function addEvento(){
+  const titulo=document.getElementById('ev-titulo').value.trim();
+  const data=document.getElementById('ev-data').value;
+  const tipo=document.getElementById('ev-tipo').value;
+  if(!titulo||!data){toast('❌ Informe título e data');return;}
+  eventos.push({titulo,data,tipo});
+  document.getElementById('ev-titulo').value='';
+  renderCalendario();
+  toast(`📅 Evento "${titulo}" adicionado!`);
+}
+
+// ==== PONTOS ====
+function darPontos(){
+  const id=parseInt(document.getElementById('pt-aluno').value);
+  const motEl=document.getElementById('pt-motivo');
+  const pts=parseInt(motEl.value)+(parseInt(document.getElementById('pt-extra').value)||0);
+  const a=alunos.find(x=>x.id===id);if(!a)return;
+  a.pontos+=pts;
+  const log=document.getElementById('pts-log');
+  if(log){
+    const d=document.createElement('div');
+    d.style.cssText='font-size:.8rem;color:rgba(245,240,232,.55);padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);';
+    d.innerHTML=`<span style="color:var(--d);font-weight:700;">+${pts} pts</span> para <strong>${a.nome}</strong> — ${motEl.options[motEl.selectedIndex].text}`;
+    log.prepend(d);
+  }
+  renderAlunos();renderDash();renderRanking();renderRankingPub();
+  toast(`⭐ +${pts} pts para ${a.nome}!`);
+}
+
+// ==== DEVOCIONAL ====
+function renderDevocionais(){
+  const el=document.getElementById('devo-list');if(!el)return;
+  el.innerHTML=devocionais.slice(0,8).map(d=>`<div class="devo-slot"><div><div class="devo-day">${d.dia==='seg'?'Segunda':'Quinta'}</div><div class="devo-date">${fmtDate(d.data)}</div></div><div><div class="devo-name">${d.aluno}</div><div class="devo-date" style="color:var(--vc);">${d.passagem}</div></div></div>`).join('');
+}
+function agendarDevo(){
+  const id=parseInt(document.getElementById('dv-aluno').value);
+  const a=alunos.find(x=>x.id===id);if(!a)return;
+  devocionais.push({dia:document.getElementById('dv-dia').value,data:document.getElementById('dv-data').value,aluno:a.nome,passagem:document.getElementById('dv-passagem').value.trim()||'A definir'});
+  devocionais.sort((a,b)=>a.data.localeCompare(b.data));
+  renderDevocionais();renderDash();
+  toast(`✝ Devocional agendado para ${a.nome}`);
+}
+
+// ==== PROFESSORES ====
+function renderProfs(){
+  const el=document.getElementById('prof-list');if(!el)return;
+  const nivelLabel={admin:'Admin',prof:'Professor',assist:'Assistente'};
+  const nivelClass={admin:'nivel-admin',prof:'nivel-prof',assist:'nivel-assist'};
+  el.innerHTML=professores.map(p=>`
+    <div class="prof-card">
+      <div class="avatar" style="width:44px;height:44px;font-size:.9rem;">${ini(p.nome)}</div>
+      <div style="flex:1;">
+        <div style="font-weight:600;font-size:.92rem;">${p.nome}</div>
+        <div style="font-size:.75rem;color:rgba(245,240,232,.4);">@${p.user}</div>
+      </div>
+      <span class="prof-nivel ${nivelClass[p.nivel]}">${nivelLabel[p.nivel]}</span>
+      ${p.id!==1?`<button class="btn-sm btn-r" style="font-size:.7rem;padding:5px 10px;" onclick="removerProf(${p.id})">✕</button>`:'<span style="font-size:.7rem;color:rgba(245,240,232,.2);">principal</span>'}
+    </div>`).join('');
+}
+
+function cadastrarProf(){
+  const nome=document.getElementById('pf-nome').value.trim();
+  const user=document.getElementById('pf-user').value.trim();
+  const pass=document.getElementById('pf-pass').value;
+  const nivel=document.getElementById('pf-nivel').value;
+  if(!nome||!user||!pass){toast('❌ Preencha todos os campos');return;}
+  if(professores.find(p=>p.user===user)){toast('❌ Usuário já existe');return;}
+  professores.push({id:nextProfId++,nome,user,pass,nivel});
+  ['pf-nome','pf-user','pf-pass'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  renderProfs();
+  toast(`✅ Prof. ${nome} cadastrado!`);
+}
+
+function removerProf(id){
+  professores=professores.filter(p=>p.id!==id);
+  renderProfs();
+  toast('Professor removido');
+}
+
+// ==== CAMPEONATOS ====
+function renderCamp(){
+  const tb=document.getElementById('camp-tb');if(!tb)return;
+  if(!campeonatos.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:rgba(245,240,232,.25);padding:2rem;">Nenhum registro</td></tr>';return;}
+  tb.innerHTML=campeonatos.map(c=>`<tr><td>${c.aluno}</td><td>${c.camp}</td><td>${c.res}</td><td style="color:var(--d);font-weight:700;">+${c.pts}</td></tr>`).join('');
+}
+function regCamp(){
+  const id=parseInt(document.getElementById('camp-aluno').value);
+  const a=alunos.find(x=>x.id===id);if(!a)return;
+  const nome=document.getElementById('camp-nome').value.trim();if(!nome){toast('Informe o nome do campeonato');return;}
+  const rv=document.getElementById('camp-res').value;
+  const pts=parseInt(rv.split('_')[0]);
+  const labels={'8':'Participou','20_3':'🥉 3º Lugar','20_2':'🥈 2º Lugar','20_1':'🥇 Campeão'};
+  a.pontos+=pts;campeonatos.push({aluno:a.nome,camp:nome,res:labels[rv],pts});
+  renderCamp();renderAlunos();renderDash();renderRanking();renderRankingPub();
+  toast(`🏆 ${labels[rv]} para ${a.nome}! +${pts} pts`);
+}
+
+// ==== CESTAS ====
+function renderCestas(){
+  const tb=document.getElementById('cestas-tb');if(!tb)return;
+  const total=cestas.filter(c=>c.tipo==='cesta').reduce((s,c)=>s+c.qtd,0);
+  const kg=cestas.filter(c=>c.tipo==='kg').reduce((s,c)=>s+c.qtd,0);
+  document.getElementById('c-total').textContent=total;
+  document.getElementById('c-kg').textContent=kg;
+  if(!cestas.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:rgba(245,240,232,.25);padding:2rem;">Nenhuma contribuição</td></tr>';return;}
+  tb.innerHTML=cestas.map(c=>`<tr><td>${c.aluno}</td><td>${c.tipo==='cesta'?'Cesta Básica':'Alimentos (kg)'}</td><td>${c.qtd}</td><td style="color:var(--d);font-weight:700;">+${c.pts}</td></tr>`).join('');
+}
+function regCesta(){
+  const id=parseInt(document.getElementById('cesta-aluno').value);
+  const a=alunos.find(x=>x.id===id);if(!a)return;
+  const tipo=document.getElementById('cesta-tipo').value;
+  const qtd=parseInt(document.getElementById('cesta-qtd').value)||1;
+  const pts=tipo==='cesta'?qtd*15:qtd*5;
+  a.pontos+=pts;cestas.push({aluno:a.nome,tipo,qtd,pts});
+  renderCestas();renderAlunos();renderDash();renderRanking();renderRankingPub();
+  toast(`🥫 ${tipo==='cesta'?'Cesta básica':'Alimentos'} registrado para ${a.nome}! +${pts} pts`);
+}
+
+// ==== RECOMPENSAS ====
+function renderRecomp(){
+  const tb=document.getElementById('rec-tb');if(!tb)return;
+  if(!recompensas.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:rgba(245,240,232,.25);padding:2rem;">Nenhum resgate ainda</td></tr>';return;}
+  tb.innerHTML=recompensas.map(r=>`<tr><td>${r.aluno}</td><td>${r.item}</td><td style="color:#f87171;font-weight:700;">-${r.pts}</td><td style="font-size:.78rem;color:rgba(245,240,232,.4);">${r.data}</td></tr>`).join('');
+}
+function regRecompensa(){
+  const id=parseInt(document.getElementById('rec-aluno').value);
+  const a=alunos.find(x=>x.id===id);if(!a)return;
+  const sel=document.getElementById('rec-item').value.split('|');
+  const pts=parseInt(sel[0]);const item=sel[1];
+  if(a.pontos<pts){toast(`❌ ${a.nome} só tem ${a.pontos} pts. Precisa de ${pts}.`);return;}
+  a.pontos-=pts;recompensas.push({aluno:a.nome,item,pts,data:new Date().toLocaleDateString('pt-BR')});
+  renderRecomp();renderAlunos();renderDash();renderRanking();renderRankingPub();
+  toast(`🎁 ${item} resgatado para ${a.nome}! -${pts} pts`);
+}
+
+// ==== METAS ADMIN ====
+function renderMetasAdm(){
+  const el=document.getElementById('metas-adm-list');if(!el)return;
+  el.innerHTML=metas.map((m,i)=>{
+    const isN=m.tipo==='cestas';
+    const cur=isN?m.atualN:m.atual;const tot=isN?m.metaN:m.meta;
+    const p=tot>0?Math.min(100,Math.round((cur/tot)*100)):0;
+    return`<div class="meta-card"><div class="meta-header"><div><div class="meta-title">${m.titulo}</div><div class="meta-detail">${m.detalhe}</div></div><div class="meta-valor">${isN?cur+' cestas':'R$ '+cur.toLocaleString('pt-BR')}<br><span class="meta-percentual">meta: ${isN?tot+' cestas':'R$ '+tot.toLocaleString('pt-BR')}</span></div></div><div class="progress-bar"><div class="progress-fill" style="width:${p}%"></div></div><div style="display:flex;justify-content:space-between;align-items:center;"><span class="meta-detail">${p}%</span><div style="display:flex;gap:.5rem;align-items:center;"><input type="number" id="mu-${i}" placeholder="Novo valor" style="width:110px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);border-radius:5px;padding:5px 9px;color:var(--cr);font-size:.8rem;outline:none;"><button class="btn-sm btn-v" style="font-size:.72rem;" onclick="updMeta(${i})">Salvar</button></div></div></div>`;
+  }).join('');
+}
+function updMeta(i){
+  const v=parseFloat(document.getElementById('mu-'+i).value);if(isNaN(v))return;
+  if(metas[i].tipo==='cestas')metas[i].atualN=v;else metas[i].atual=v;
+  renderMetasAdm();renderMetasPub();toast('📊 Meta atualizada!');
+}
+function addMeta(){
+  const t=document.getElementById('mt-titulo').value.trim();
+  const m=parseFloat(document.getElementById('mt-meta').value)||0;
+  const a=parseFloat(document.getElementById('mt-atual').value)||0;
+  const d=document.getElementById('mt-detalhe').value.trim();
+  if(!t){toast('Informe o título');return;}
+  metas.push({titulo:t,meta:m,atual:a,detalhe:d});
+  ['mt-titulo','mt-meta','mt-atual','mt-detalhe'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  renderMetasAdm();renderMetasPub();toast('🎯 Nova meta adicionada!');
+}
+
+// ==== INSCRIÇÕES ====
+function renderIns(){
+  const tb=document.getElementById('ins-tb');if(!tb)return;
+  if(!inscricoes.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;color:rgba(245,240,232,.25);padding:2rem;">Nenhuma inscrição</td></tr>';return;}
+  tb.innerHTML=inscricoes.map((ins,i)=>`<tr><td style="font-weight:600;">${ins.nome}</td><td>${ins.idade}</td><td><a href="${waLink(ins.tel)}" target="_blank" style="color:#25D366;text-decoration:none;font-weight:600;">💬 ${ins.tel}</a></td><td>${ins.dia}</td><td style="font-size:.78rem;">${ins.exp}</td><td><span style="background:rgba(234,179,8,.12);color:#fbbf24;padding:2px 9px;border-radius:100px;font-size:.67rem;font-weight:600;letter-spacing:1px;">PENDENTE</span></td><td><button class="btn-sm btn-v" style="font-size:.7rem;padding:6px 10px;" onclick="converterIns(${i})">→ Cadastrar</button></td></tr>`).join('');
+}
+function converterIns(i){
+  const ins=inscricoes[i];
+  alunos.push({id:nextId++,nome:ins.nome,tel:ins.tel,idade:parseInt(ins.idade)||0,nasc:'',faixa:'branca',grau:0,pontos:0,presencas:0,faltas:0,obs:'Veio pelo formulário de inscrição',foto:''});
+  inscricoes.splice(i,1);
+  renderIns();renderAlunos();renderDash();renderRankingPub();popAllSels();
+  toast(`✅ ${ins.nome} cadastrado como aluno!`);
+}
+
+// ==== CONFIGURAÇÕES ====
+function renderConfig(){
+  const cfgPrev=document.getElementById('cfg-foto-preview');
+  const cfgPh=document.getElementById('cfg-foto-placeholder');
+  const fotoProj=document.getElementById('foto-projeto');
+  if(cfgPrev&&fotoProj&&fotoProj.src&&fotoProj.style.display!=='none'){
+    cfgPrev.src=fotoProj.src;cfgPrev.style.display='block';
+    if(cfgPh)cfgPh.style.display='none';
+  }
+}
+
+function salvarConfig(){
+  toast('✅ Configurações salvas!');
+}
+
+function alterarSenha(){
+  const atual=document.getElementById('cfg-pass-atual').value;
+  const nova=document.getElementById('cfg-pass-nova').value;
+  const conf=document.getElementById('cfg-pass-conf').value;
+  const prof=professores[0];
+  if(atual!==prof.pass){toast('❌ Senha atual incorreta');return;}
+  if(nova!==conf){toast('❌ As senhas não coincidem');return;}
+  if(nova.length<4){toast('❌ Senha muito curta');return;}
+  prof.pass=nova;
+  ['cfg-pass-atual','cfg-pass-nova','cfg-pass-conf'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  toast('🔑 Senha alterada com sucesso!');
+}
+
+// ==== INSCRIÇÃO PÚBLICA ====
+function enviarInscricao(){
+  const nome=document.getElementById('fi-nome').value.trim();
+  const tel=document.getElementById('fi-tel').value.trim();
+  if(!nome||!tel){toast('❌ Preencha nome e WhatsApp');return;}
+  async function enviarInscricao() {
+  const nome = document.getElementById('fi-nome').value.trim();
+  const tel = document.getElementById('fi-tel').value.trim();
+  if (!nome || !tel) { toast('❌ Preencha nome e WhatsApp'); return; }
+
+  const dadosInscricao = {
+    nome,
+    tel,
+    idade: document.getElementById('fi-idade').value || '?',
+    dia: document.getElementById('fi-dia').value || 'A definir',
+    exp: document.getElementById('fi-exp').value || 'Não informado',
+    como: document.getElementById('fi-como').value,
+    obs: document.getElementById('fi-obs').value
+  };
+
+  try {
+    const resposta = await fetch('/api/inscricoes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dadosInscricao)
+    });
+
+    if (resposta.ok) {
+      document.getElementById('ins-form').style.display = 'none';
+      document.getElementById('ins-ok').style.display = 'block';
+      toast(`🎉 Inscrição de ${nome} enviada com sucesso!`);
+    } else {
+      toast('❌ Erro ao salvar no banco de dados.');
+    }
+  } catch (erro) {
+    console.error(erro);
+    toast('❌ Erro de conexão com o servidor.');
+  }
+}
+  document.getElementById('ins-form').style.display='none';
+  document.getElementById('ins-ok').style.display='block';
+  toast(`🎉 Inscrição de ${nome} recebida!`);
+}
+
+// ==== MISC ====
+function scrollTo2(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});}
+
+// Init metas públicas e ranking ao carregar
+renderMetasPub();
+renderRankingPub();
+</script>
+</body>
+</html>
