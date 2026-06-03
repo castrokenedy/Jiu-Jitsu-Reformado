@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<<<<<<< HEAD
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jiu-Jitsu Reformado</title>
@@ -189,5 +190,91 @@
 
 <div class="toast" id="toast"></div>
 <script type="module" src="./js/landing.js"></script>
+=======
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jiu-Jitsu Reformado</title>
+  <link rel="stylesheet" href="./css/main.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="topbar">
+    <h1>✝ Jiu-Jitsu Reformado</h1>
+    <div class="actions">
+      <button id="go-panel" class="hidden">Ir para o painel</button>
+      <button id="btn-open-login">Painel do Professor</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero card">
+      <h2>Projeto social gratuito da Igreja Reformada</h2>
+      <p>Treinamento de jiu-jítsu com discipulado, devocionais, campeonatos, ações sociais e sistema de pontuação completo.</p>
+    </section>
+
+    <section class="card">
+      <h3>Foto do projeto</h3>
+      <img id="landing-foto" class="landing-foto" src="" alt="Foto do projeto" />
+    </section>
+
+    <section class="grid two">
+      <article class="card">
+        <h3>Ranking público</h3>
+        <div id="ranking-publico"></div>
+      </article>
+      <article class="card">
+        <h3>Metas do projeto</h3>
+        <div id="metas-publicas"></div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h3>Inscrição para aula experimental</h3>
+      <form id="form-inscricao" class="grid two">
+        <input id="fi-nome" placeholder="Nome completo" required />
+        <input id="fi-idade" type="number" min="10" placeholder="Idade" required />
+        <input id="fi-tel" placeholder="WhatsApp" required />
+        <select id="fi-dia">
+          <option value="">Dia preferido</option>
+          <option>Segunda-feira</option>
+          <option>Quinta-feira</option>
+          <option>Qualquer um</option>
+        </select>
+        <select id="fi-exp">
+          <option value="">Experiência</option>
+          <option>Nunca pratiquei</option>
+          <option>Já pratiquei mas parei</option>
+          <option>Pratico regularmente</option>
+        </select>
+        <select id="fi-como">
+          <option value="">Como nos conheceu?</option>
+          <option>Indicação de amigo</option>
+          <option>Pela igreja</option>
+          <option>Redes sociais</option>
+          <option>Este site</option>
+          <option>Outro</option>
+        </select>
+        <textarea id="fi-obs" class="full" placeholder="Observações"></textarea>
+        <button type="submit" class="full">Enviar inscrição</button>
+      </form>
+      <p id="ins-ok" class="hidden success">Inscrição recebida. Entraremos em contato!</p>
+    </section>
+  </main>
+
+  <div id="login-modal" class="modal">
+    <div class="modal-box card">
+      <h3>Login do professor</h3>
+      <form id="form-login" class="grid">
+        <input id="login-email" type="email" placeholder="E-mail" required />
+        <input id="login-password" type="password" placeholder="Senha" required />
+        <button type="submit">Entrar</button>
+        <button id="btn-close-login" type="button">Fechar</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script type="module" src="./js/landing.js"></script>
+>>>>>>> aae21a11f226edf893d90d536ef21b5675eb3146
 </body>
 </html>
