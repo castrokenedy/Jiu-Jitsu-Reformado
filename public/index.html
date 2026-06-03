@@ -2,9 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content=\"width=device-width, initial-scale=1.0\">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jiu-Jitsu Reformado</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght=700;900&family=Barlow:wght=300;400;500;600;700&family=Barlow+Condensed:wght=600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Barlow:wght=300;400;500;600;700&family=Barlow+Condensed:wght=600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--v:#1a4731;--vm:#2d6a4f;--vc:#52b788;--d:#c9a84c;--dl:#e8c96a;--cr:#f5f0e8;--cd:#ede5d0;--mb:#3d2b1f;--ce:#1c1c1c;--br:#ffff;--vm2:#1e2e26;}
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -31,7 +31,7 @@ nav.scrolled{padding:0.6rem 4%;background:rgba(15,40,28,0.98);box-shadow:0 10px 
   .nav-links{position:absolute;top:100%;left:0;width:100%;background:var(--v);flex-direction:column;padding:2rem;gap:1.5rem;border-bottom:2px solid var(--d);opacity:0;pointer-events:none;transform:translateY(-10px);transition:0.3s;}
   .nav-links.open{opacity:1;pointer-events:auto;transform:translateY(0);}
 }
-header{min-height:100vh;background:linear-gradient(rgba(28,28,28,0.4),rgba(28,28,28,0.9)),url('https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;display:flex;align-items:center;padding:0 4%;position:relative;overflow:hidden;}
+header{min-height:100vh;background:linear-gradient(rgba(28,28,28,0.4),rgba(28,28,28,0.9)),url('https://images.unsplash.com/photo-1517438476312-10d79c07750d?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat fixed;display:flex;align-items:center;padding:0 4%;position:relative;overflow:hidden;}
 header::before{content:'';position:absolute;bottom:0;left:0;width:100%;height:150px;background:linear-gradient(transparent,var(--ce));z-index:2;}
 .hero-c{max-width:800px;z-index:3;margin-top:60px;}
 .badge-h{display:inline-flex;align-items:center;gap:8px;background:rgba(26,71,49,0.6);border:1px solid rgba(82,183,136,0.3);padding:6px 14px;border-radius:50px;color:var(--vc);font-size:0.85rem;font-weight:600;text-transform:uppercase;letter-spacing:2px;margin-bottom:1.5rem;backdrop-filter:blur(5px);animation:fadeInUp 0.8s ease;}
@@ -281,7 +281,8 @@ footer{background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.03);padding:60
     <div class="podium-c">
       <div class="podium-t">👑 Top 3 Atletas do Mês</div>
       <div class="podium-flex" id="podium-container">
-        </div>
+        <!-- Gerado Dinamicamente -->
+      </div>
     </div>
     <div class="rk-table-c">
       <div class="rk-table-t">📋 Classificação Geral</div>
@@ -296,7 +297,8 @@ footer{background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.03);padding:60
             </tr>
           </thead>
           <tbody id="ranking-tbody">
-            </tbody>
+            <!-- Gerado Dinamicamente -->
+          </tbody>
         </table>
       </div>
     </div>
@@ -417,6 +419,7 @@ footer{background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.03);padding:60
   </div>
 </footer>
 
+<!-- MODAL LOGIN -->
 <div class="modal" id="modal-login">
   <div class="modal-c">
     <div class="modal-close" onclick="fecharModal('modal-login')">&times;</div>
@@ -434,6 +437,7 @@ footer{background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.03);padding:60
   </div>
 </div>
 
+<!-- PAINEL ADMINISTRATIVO -->
 <div class="pnl-layout" id="painel-admin">
   <div class="pnl-side">
     <div>
@@ -461,6 +465,7 @@ footer{background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.03);padding:60
     </div>
     <div class="pnl-body">
       
+      <!-- SEC DASHBOARD -->
       <div class="pnl-sec active" id="ps-dashboard">
         <div class="grid-stats">
           <div class="card-stat">
@@ -482,6 +487,7 @@ footer{background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.03);padding:60
         </div>
       </div>
 
+      <!-- SEC ALUNOS -->
       <div class="pnl-sec" id="ps-alunos">
         <div class="pnl-toolbar">
           <input type="text" class="pnl-search" id="busca-aluno" placeholder="Buscar atleta por nome..." oninput="renderAlunos()">
@@ -500,23 +506,29 @@ footer{background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.03);padding:60
               </tr>
             </thead>
             <tbody id="pnl-alunos-tbody">
-              </tbody>
+              <!-- Dinâmico -->
+            </tbody>
           </table>
         </div>
       </div>
 
+      <!-- SEC PRESENCA -->
       <div class="pnl-sec" id="ps-presenca">
         <p style="color:rgba(255,255,255,0.5); margin-bottom:1.5rem; font-size:0.95rem;">Selecione abaixo todos os atletas que compareceram ao treino de hoje. Cada presença computa +1 ponto no ranking.</p>
         <div class="freq-grid" id="pnl-presenca-grid">
-          </div>
+          <!-- Dinâmico -->
+        </div>
         <button class="btn-sm btn-v" style="padding:1rem 2rem; font-size:0.9rem;" onclick="salvarChamadaLote()">Confirmar e Computar Chamada de Hoje</button>
       </div>
 
+      <!-- SEC INSCRICOES -->
       <div class="pnl-sec" id="ps-inscricoes">
         <div class="ins-card-g" id="pnl-inscricoes-container">
-          </div>
+          <!-- Dinâmico -->
+        </div>
       </div>
 
+      <!-- SEC CONFIG -->
       <div class="pnl-sec" id="ps-config">
         <div style="max-width:450px; background:#151515; padding:2.5rem; border-radius:6px; border:1px solid rgba(255,255,255,0.03);">
           <h4 style="font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; font-size:1.3rem; margin-bottom:1.5rem; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:0.5rem; color:var(--d);">Modificar Credenciais Administrativas</h4>
@@ -531,6 +543,7 @@ footer{background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.03);padding:60
   </div>
 </div>
 
+<!-- MODAL ADD ALUNO -->
 <div class="modal" id="modal-add-aluno">
   <div class="modal-c">
     <div class="modal-close" onclick="fecharModal('modal-add-aluno')">&times;</div>
@@ -566,6 +579,7 @@ footer{background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.03);padding:60
   </div>
 </div>
 
+<!-- MODAL LANCAR PONTOS -->
 <div class="modal" id="modal-pontos-aluno">
   <div class="modal-c">
     <div class="modal-close" onclick="fecharModal('modal-pontos-aluno')">&times;</div>
@@ -589,6 +603,7 @@ footer{background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.03);padding:60
   </div>
 </div>
 
+<!-- MODAL GRADUAR ALUNO -->
 <div class="modal" id="modal-graduar-aluno">
   <div class="modal-c">
     <div class="modal-close" onclick="fecharModal('modal-graduar-aluno')">&times;</div>
@@ -625,7 +640,7 @@ footer{background:#0f0f0f;border-top:1px solid rgba(255,255,255,0.03);padding:60
 
 <script>
 // ==== ESTADO DO APLICATIVO ====
-let professores = [{user:'admin',pass:'1234',name:'Mestre Kenedy'}]; // Variável local mantida para compatibilidade visual do Login
+let professores = [{user:'admin',pass:'1234',name:'Mestre Kenedy'}]; 
 let alunos = [];
 let inscricoes = [];
 let chamadaSelecionados = new Set();
@@ -638,7 +653,6 @@ window.addEventListener('scroll',()=>{
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Busca as informações reais do Supabase na inicialização
   carregarAlunosDoBanco();
   carregarInscricoesDoBanco();
 });
@@ -650,7 +664,6 @@ async function carregarAlunosDoBanco() {
     if (!resposta.ok) throw new Error('Erro ao buscar dados do servidor');
     alunos = await resposta.json();
     
-    // Atualiza todos os elementos visuais do site com os dados reais
     renderRankings();
     renderAlunos();
     renderPresencaGrid();
@@ -820,10 +833,8 @@ function toast(msg){
 
 // ==== RENDERIZAÇÃO PÚBLICA DO RANKING ====
 function renderRankings(){
-  // Clona e ordena o array global de alunos baseado nos pontos salvos no banco
   const ordenados = [...alunos].sort((a,b)=>b.pontos - a.pontos);
   
-  // Renderiza Tabela Geral
   const tbody = document.getElementById('ranking-tbody');
   tbody.innerHTML = ordenados.length === 0 ? '<tr><td colspan="4" style="text-align:center; color:rgba(255,255,255,0.3);">Nenhum atleta listado</td></tr>' : '';
   
@@ -845,7 +856,6 @@ function renderRankings(){
     tbody.appendChild(tr);
   });
 
-  // Renderiza Pódio Top 3
   const podiumContainer = document.getElementById('podium-container');
   podiumContainer.innerHTML = '';
   
@@ -898,6 +908,7 @@ function efetuarLogin(){
   }
 }
 
+// O restante das lógicas de estado permanecem idênticas para a perfeita operação do sistema
 function efetuarLogout(){
   document.getElementById('painel-admin').style.display = 'none';
   toast('🔒 Painel administrativo desconectado.');
@@ -925,7 +936,6 @@ function atualizarDashboardStats(){
   document.getElementById('st-lider-nome').innerText = lider ? lider.nome : 'Nenhum';
 }
 
-// ==== GESTÃO DE ALUNOS PAINEL ====
 function renderAlunos(){
   const tbody = document.getElementById('pnl-alunos-tbody');
   const busca = (document.getElementById('busca-aluno').value || '').toLowerCase();
@@ -953,7 +963,6 @@ function renderAlunos(){
   });
 }
 
-// ==== FREQUÊNCIA / CHAMADA EM LOTE ====
 function renderPresencaGrid(){
   const grid = document.getElementById('pnl-presenca-grid');
   grid.innerHTML = alunos.length === 0 ? '<p style="color:rgba(255,255,255,0.3)">Nenhum atleta cadastrado.</p>' : '';
@@ -999,7 +1008,6 @@ async function salvarChamadaLote(){
   toast(`🥋 Chamada finalizada! +1 ponto atribuído a ${sucessos} atletas.`);
 }
 
-// ==== PONTUAÇÃO INDIVIDUAL ====
 function abrirModalPontos(id, nome){
   document.getElementById('m-pts-id').value = id;
   document.getElementById('m-pts-title').innerText = `Pontuar: ${nome}`;
@@ -1026,7 +1034,6 @@ async function salvarPontosIndiv(){
   }
 }
 
-// ==== PROMOÇÕES / GRADUAÇÃO ====
 function abrirModalGraduar(id, nome, faixa, graus){
   document.getElementById('m-grad-id').value = id;
   document.getElementById('m-grad-title').innerText = `Graduar: ${nome}`;
@@ -1068,7 +1075,6 @@ async function deletarAlunoDoPainel(id){
   }
 }
 
-// ==== GESTÃO DE NOVAS INSCRIÇÕES PÚBLICAS ====
 function renderInscricoes(){
   const container = document.getElementById('pnl-inscricoes-container');
   container.innerHTML = inscricoes.length === 0 ? '<p style="color:rgba(255,255,255,0.3)">Nenhuma nova pré-inscrição pendente.</p>' : '';
@@ -1119,7 +1125,6 @@ async function aceitarInscricao(idInscricao, nomeAtleta){
   }
 }
 
-// ==== AJUSTES DE CREDENCIAIS ADM ====
 function alterarSenhaProf(){
   const atual = document.getElementById('cfg-pass-atual').value;
   const nova = document.getElementById('cfg-pass-nova').value;
