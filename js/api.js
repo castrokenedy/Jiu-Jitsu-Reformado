@@ -64,6 +64,16 @@ export async function getProfessorProfileBySession() {
     .eq('ativo', true)
     .maybeSingle();
   if (error) throw error;
+  if (!data && session.user.email) {
+    const { data: fallbackData, error: fallbackError } = await supabase
+      .from('professores')
+      .select('*')
+      .eq('email', session.user.email)
+      .eq('ativo', true)
+      .maybeSingle();
+    if (fallbackError) throw fallbackError;
+    return fallbackData;
+  }
   return data;
 }
 
@@ -96,7 +106,12 @@ export async function listPublicData() {
 
 export async function listPainelData() {
   const queries = await Promise.all([
-    supabase.from('alunos').select('*').eq('ativo', true).order('nome'),
+    supabase.from('alunos').select('*').eq('ativo', true).order('nome').then((res) => res).catch(async (err) => {
+      if (err?.message?.includes('column') && err.message.includes('nome')) {
+        return supabase.from('alunos').select('*').eq('ativo', true);
+      }
+      throw err;
+    }),
     supabase.from('devocionais').select('*').order('data', { ascending: true }),
     supabase.from('campeonatos').select('*').order('id', { ascending: false }),
     supabase.from('cestas').select('*').order('id', { ascending: false }),

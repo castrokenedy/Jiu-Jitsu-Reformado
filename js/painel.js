@@ -21,6 +21,27 @@ import {
   saveConfig
 } from './api.js';
 
+function showFatalError(message) {
+  document.body.innerHTML = `
+    <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#0f172a;color:#f8fafc;">
+      <div style="max-width:640px;text-align:center;border:1px solid rgba(255,255,255,.08);padding:28px 32px;border-radius:18px;background:rgba(15,23,42,.95);box-shadow:0 18px 50px rgba(0,0,0,.35);">
+        <div style="font-size:2rem;margin-bottom:16px;">⚠️ Erro ao carregar o painel</div>
+        <div style="font-size:1rem;line-height:1.6;color:#e2e8f0;">${message}</div>
+        <button onclick="window.location.href='./index.html'" style="margin-top:24px;padding:12px 20px;border:none;border-radius:10px;background:#2563eb;color:white;font-weight:700;cursor:pointer;">Voltar à landing</button>
+      </div>
+    </div>`;
+}
+
+window.addEventListener('error', (event) => {
+  console.error('Unhandled error:', event.error || event.message);
+  showFatalError((event.error && event.error.message) || event.message || 'Erro desconhecido');
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled rejection:', event.reason);
+  showFatalError((event.reason && event.reason.message) || String(event.reason) || 'Erro desconhecido');
+});
+
 // ==== STATE ====
 let alunos = [];
 let devocionais = [];
