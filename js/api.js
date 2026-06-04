@@ -7,20 +7,38 @@ export async function getSession() {
 }
 
 export async function loginByUsername(userLogin, password) {
-  const { data: prof, error: profError } = await supabase
+  let prof = null;
+  let profError = null;
+
+  const { data, error } = await supabase
     .from('professores')
     .select('id,nome,nivel,email,user_login,auth_user_id')
     .eq('email', userLogin)
     .eq('ativo', true)
     .maybeSingle();
+  prof = data;
+  profError = error;
+
+  if (!prof && !userLogin.includes('@')) {
+    const { data: byUser, error: byUserError } = await supabase
+      .from('professores')
+      .select('id,nome,nivel,email,user_login,auth_user_id')
+      .eq('user_login', userLogin)
+      .eq('ativo', true)
+      .maybeSingle();
+    if (!byUserError) {
+      prof = byUser;
+    }
+  }
+
   if (profError) throw profError;
   if (!prof || !prof.email) throw new Error('Usuário não encontrado.');
 
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
     email: prof.email,
     password
   });
-  if (error) throw error;
+  if (authError) throw authError;
 
   const { data: updatedProf } = await supabase
     .from('professores')
@@ -28,7 +46,7 @@ export async function loginByUsername(userLogin, password) {
     .eq('email', prof.email)
     .maybeSingle();
 
-  return { session: data.session, professor: updatedProf || prof };
+  return { session: authData.session, professor: updatedProf || prof };
 }
 
 export async function logout() {
@@ -59,8 +77,12 @@ export async function syncProfessorAuthUserByEmail(authUserId, email) {
 }
 
 export async function listPublicData() {
-  const [alunosRes, metasRes, cfgRes] = await Promise.all([
-    supabase.from('alunos').select('*').eq('ativo', true).order('pontos', { ascending: false }),
+  let alunosRes = await supabase.from('alunos').select('*').eq('ativo', true).order('pontos', { ascending: false });
+  if (alunosRes.error && alunosRes.error.message?.includes('column') && alunosRes.error.message.includes('pontos')) {
+    alunosRes = await supabase.from('alunos').select('*').eq('ativo', true).order('id', { ascending: false });
+  }
+
+  const [metasRes, cfgRes] = await Promise.all([
     supabase.from('metas').select('*').order('ordem', { ascending: true }),
     supabase.from('configuracoes').select('*')
   ]);
