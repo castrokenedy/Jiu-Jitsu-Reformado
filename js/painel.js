@@ -77,18 +77,26 @@ function cleanTel(tel) { return (tel || '').replace(/\D/g, ''); }
 function waLink(tel) { const n = cleanTel(tel); return `https://wa.me/55${n}`; }
 
 async function refreshData() {
-  const data = await listPainelData();
-  alunos = data.alunos;
-  devocionais = data.devocionais;
-  campeonatos = data.campeonatos;
-  cestas = data.cestas;
-  inscricoes = data.inscricoes;
-  recompensas = data.recompensas;
-  metas = data.metas;
-  professores = data.professores;
-  eventos = data.eventos;
-  presencaLog = data.presencaLog;
-  config = data.config;
+  console.log('🔄 Iniciando refreshData...');
+  try {
+    const data = await listPainelData();
+    console.log('📦 Dados carregados:', data);
+    alunos = data.alunos || [];
+    devocionais = data.devocionais || [];
+    campeonatos = data.campeonatos || [];
+    cestas = data.cestas || [];
+    inscricoes = data.inscricoes || [];
+    recompensas = data.recompensas || [];
+    metas = data.metas || [];
+    professores = data.professores || [];
+    eventos = data.eventos || [];
+    presencaLog = data.presencaLog || [];
+    config = data.config || [];
+    console.log('✅ refreshData completo. Alunos:', alunos.length);
+  } catch (e) {
+    console.error('❌ Erro em refreshData:', e);
+    throw e;
+  }
 }
 
 function currUserProf() {
@@ -162,35 +170,55 @@ async function initApp() {
 
 // ==== DASHBOARD ====
 function renderDash() {
-  checkBdays();
-  document.getElementById('ds-total').textContent = alunos.length;
-  const avgFreq = alunos.length ? Math.round(alunos.reduce((s, a) => s + pct(a), 0) / alunos.length) : 0;
-  document.getElementById('ds-freq').textContent = avgFreq + '%';
-  document.getElementById('ds-ins').textContent = inscricoes.filter((i) => i.status === 'pendente').length;
-  const totalPts = alunos.reduce((s, a) => s + (a.pontos || 0), 0);
-  document.getElementById('ds-pts').textContent = totalPts;
-  const totalCestas = cestas.filter((c) => c.tipo === 'cesta').reduce((s, c) => s + (c.qtd || 0), 0);
-  document.getElementById('ds-cestas').textContent = totalCestas;
+  console.log('🎨 Renderizando Dashboard...');
+  try {
+    checkBdays();
+    const dashDate = document.getElementById('dash-date');
+    if (dashDate) dashDate.textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+    
+    const dsTotal = document.getElementById('ds-total');
+    if (dsTotal) dsTotal.textContent = alunos.length;
+    console.log('✅ ds-total: ' + alunos.length);
+    
+    const avgFreq = alunos.length ? Math.round(alunos.reduce((s, a) => s + pct(a), 0) / alunos.length) : 0;
+    const dsFreq = document.getElementById('ds-freq');
+    if (dsFreq) dsFreq.textContent = avgFreq + '%';
+    console.log('✅ ds-freq: ' + avgFreq + '%');
+    
+    const dsIns = document.getElementById('ds-ins');
+    if (dsIns) dsIns.textContent = inscricoes.filter((i) => i.status === 'pendente').length;
+    
+    const totalPts = alunos.reduce((s, a) => s + (a.pontos || 0), 0);
+    const dsPts = document.getElementById('ds-pts');
+    if (dsPts) dsPts.textContent = totalPts;
+    
+    const totalCestas = cestas.filter((c) => c.tipo === 'cesta').reduce((s, c) => s + (c.qtd || 0), 0);
+    const dsCestas = document.getElementById('ds-cestas');
+    if (dsCestas) dsCestas.textContent = totalCestas;
 
-  const dashDevo = document.getElementById('dash-devo');
-  if (dashDevo) {
-    const prox = devocionais.slice(0, 2);
-    dashDevo.innerHTML = prox.length ? prox.map((d) => `<div class="devo-slot"><span class="devo-day">${d.dia === 'seg' ? 'Segunda' : 'Quinta'}</span><div><div class="devo-name">${d.aluno}</div><div class="devo-date">${fmtDate(d.data)} · ${d.passagem || ''}</div></div></div>`).join('') : '<p style="font-size:.85rem;color:rgba(245,240,232,.35);">Nenhum devocional agendado</p>';
-  }
+    const dashDevo = document.getElementById('dash-devo');
+    if (dashDevo) {
+      const prox = devocionais.slice(0, 2);
+      dashDevo.innerHTML = prox.length ? prox.map((d) => `<div class="devo-slot"><span class="devo-day">${d.dia === 'seg' ? 'Segunda' : 'Quinta'}</span><div><div class="devo-name">${d.aluno}</div><div class="devo-date">${fmtDate(d.data)} · ${d.passagem || ''}</div></div></div>`).join('') : '<p style="font-size:.85rem;color:rgba(245,240,232,.35);">Nenhum devocional agendado</p>';
+    }
 
-  const alertEl = document.getElementById('dash-alertas');
-  if (alertEl) {
-    const low = alunos.filter((a) => ((a.presencas || 0) + (a.faltas || 0)) > 5 && pct(a) < 65);
-    alertEl.innerHTML = low.length ? low.map((a) => `<div style="display:flex;align-items:center;gap:.75rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);">${avatarEl(a, 32)}<div style="flex:1;"><div style="font-size:.85rem;font-weight:600;">${a.nome}</div><div style="font-size:.72rem;color:rgba(245,240,232,.38);">${pct(a)}% de frequência · ${a.faltas || 0} faltas</div></div><a href="${waLink(a.tel)}" target="_blank" style="font-size:.72rem;color:#25D366;font-weight:600;text-decoration:none;">💬 WA</a></div>`).join('') : '<p style="font-size:.85rem;color:rgba(245,240,232,.35);">✅ Todos com frequência regular</p>';
-  }
+    const alertEl = document.getElementById('dash-alertas');
+    if (alertEl) {
+      const low = alunos.filter((a) => ((a.presencas || 0) + (a.faltas || 0)) > 5 && pct(a) < 65);
+      alertEl.innerHTML = low.length ? low.map((a) => `<div style="display:flex;align-items:center;gap:.75rem;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);">${avatarEl(a, 32)}<div style="flex:1;"><div style="font-size:.85rem;font-weight:600;">${a.nome}</div><div style="font-size:.72rem;color:rgba(245,240,232,.38);">${pct(a)}% de frequência · ${a.faltas || 0} faltas</div></div><a href="${waLink(a.tel)}" target="_blank" style="font-size:.72rem;color:#25D366;font-weight:600;text-decoration:none;">💬 WA</a></div>`).join('') : '<p style="font-size:.85rem;color:rgba(245,240,232,.35);">✅ Todos com frequência regular</p>';
+    }
 
-  const cards = document.getElementById('dash-cards');
-  if (cards) {
-    const sorted = [...alunos].sort((a, b) => (b.pontos || 0) - (a.pontos || 0)).slice(0, 12);
-    cards.innerHTML = sorted.map((a, i) => {
-      const c = FC[a.faixa] || FC.branca;
-      return `<div class="aluno-mini" onclick="openModal(${a.id})">${i < 3 ? `<div style="position:absolute;top:8px;right:8px;font-size:.75rem;background:rgba(201,168,76,.15);color:var(--d);border-radius:4px;padding:2px 6px;font-weight:700;">#${i + 1}</div>` : ''}${avatarEl(a, 60)}<div class="am-nome">${(a.nome || '').split(' ')[0]}</div><div class="am-pts">${a.pontos || 0}</div><div class="am-label">pontos</div><div class="faixa-stripe" style="background:${c.bg};border:1px solid rgba(255,255,255,.1);"></div></div>`;
-    }).join('');
+    const cards = document.getElementById('dash-cards');
+    if (cards) {
+      const sorted = [...alunos].sort((a, b) => (b.pontos || 0) - (a.pontos || 0)).slice(0, 12);
+      cards.innerHTML = sorted.map((a, i) => {
+        const c = FC[a.faixa] || FC.branca;
+        return `<div class="aluno-mini" onclick="openModal(${a.id})">${i < 3 ? `<div style="position:absolute;top:8px;right:8px;font-size:.75rem;background:rgba(201,168,76,.15);color:var(--d);border-radius:4px;padding:2px 6px;font-weight:700;">#${i + 1}</div>` : ''}${avatarEl(a, 60)}<div class="am-nome">${(a.nome || '').split(' ')[0]}</div><div class="am-pts">${a.pontos || 0}</div><div class="am-label">pontos</div><div class="faixa-stripe" style="background:${c.bg};border:1px solid rgba(255,255,255,.1);"></div></div>`;
+      }).join('');
+    }
+    console.log('✅ Dashboard renderizado com sucesso');
+  } catch (e) {
+    console.error('❌ Erro ao renderizar dashboard:', e);
   }
 }
 
@@ -606,17 +634,28 @@ window.alterarSenha = function alterarSenha() { toast('ℹ️ A senha é gerenci
 window.logout = async function logout() { await apiLogout(); window.location.href = './index.html'; };
 
 (async function boot() {
+  console.log('🚀 Boot iniciado');
   try {
     const session = await getSession();
+    console.log('🔐 Session verificada:', session ? 'OK' : 'Não encontrada');
     if (!session) { window.location.href = './index.html'; return; }
+    
     currentProfile = await getProfessorProfileBySession();
+    console.log('👤 Professor profile:', currentProfile?.nome);
     if (!currentProfile) { window.location.href = './index.html'; return; }
 
     const label = document.getElementById('user-label');
     if (label) label.textContent = `${currentProfile.nome} · ${currentProfile.nivel === 'admin' ? 'Admin' : currentProfile.nivel === 'prof' ? 'Professor' : 'Assistente'}`;
 
+    const navBar = document.getElementById('app-nav');
+    if (navBar) navBar.style.display = 'flex';
+    console.log('🎨 Nav bar mostrada');
+
+    console.log('⏳ Iniciando app...');
     await initApp();
+    console.log('✅ Boot completo!');
   } catch (e) {
-    toast(`❌ ${e.message || 'Erro ao iniciar painel'}`);
+    console.error('❌ Erro em boot:', e);
+    showFatalError(e.message || 'Erro ao iniciar painel');
   }
 })();

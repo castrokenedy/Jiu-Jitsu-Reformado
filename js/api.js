@@ -112,14 +112,14 @@ export async function listPainelData() {
       }
       throw err;
     }),
-    supabase.from('devocionais').select('*').order('data', { ascending: true }),
+    supabase.from('devocionais').select('*').order('data', { ascending: true }).then((res) => res).catch(async (err) => { if (err?.message?.includes('column') && err.message.includes('data')) { return supabase.from('devocionais').select('*'); } throw err; }),
     supabase.from('campeonatos').select('*').order('id', { ascending: false }),
     supabase.from('cestas').select('*').order('id', { ascending: false }),
     supabase.from('inscricoes').select('*').order('id', { ascending: false }),
     supabase.from('recompensas').select('*').order('id', { ascending: false }),
     supabase.from('metas').select('*').order('ordem', { ascending: true }),
     supabase.from('professores').select('*').eq('ativo', true).order('id'),
-    supabase.from('eventos').select('*').order('data', { ascending: true }),
+    supabase.from('eventos').select('*').order('data', { ascending: true }).then((res) => res).catch(async (err) => { if (err?.message?.includes('column') && err.message.includes('data')) { return supabase.from('eventos').select('*'); } throw err; }),
     supabase.from('presenca_log').select('*').order('id', { ascending: false }),
     supabase.from('configuracoes').select('*')
   ]);
