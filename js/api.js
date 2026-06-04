@@ -10,7 +10,7 @@ export async function loginByUsername(userLogin, password) {
   const { data: prof, error: profError } = await supabase
     .from('professores')
     .select('id,nome,nivel,email,user_login,auth_user_id')
-    .eq('user_login', userLogin)
+    .eq('email', userLogin)
     .eq('ativo', true)
     .maybeSingle();
   if (profError) throw profError;
@@ -170,9 +170,20 @@ export async function createProfessorWithAuth(userLogin, password, nome, nivel) 
   };
   if (authData?.user?.id) insertPayload.auth_user_id = authData.user.id;
 
-  const { data, error } = await supabase.from('professores').insert(insertPayload).select().single();
-  if (error) throw error;
-  return data;
+  try {
+    const { data, error } = await supabase.from('professores').insert(insertPayload).select().single();
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    const msg = error?.message || '';
+    if (msg.includes('user_login') || msg.includes('column') && msg.includes('user_login')) {
+      delete insertPayload.user_login;
+      const { data, error: retryError } = await supabase.from('professores').insert(insertPayload).select().single();
+      if (retryError) throw retryError;
+      return data;
+    }
+    throw error;
+  }
 }
 
 export async function removeProfessor(id) {
