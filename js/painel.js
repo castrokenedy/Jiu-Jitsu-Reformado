@@ -32,6 +32,11 @@ function showFatalError(message) {
     </div>`;
 }
 
+  // MOSTRAR O APP (painel)
+  const appDiv = document.getElementById('app');
+  if (appDiv) appDiv.style.display = 'block';
+  console.log('✅ APP visível');
+
 window.addEventListener('error', (event) => {
   console.error('Unhandled error:', event.error || event.message);
   showFatalError((event.error && event.error.message) || event.message || 'Erro desconhecido');
