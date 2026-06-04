@@ -153,6 +153,28 @@ export async function createProfessor(payload) {
   if (error) throw error;
 }
 
+export async function createProfessorWithAuth(userLogin, password, nome, nivel) {
+  const email = `${userLogin}@trocar-email.com`;
+  const { data: authData, error: authError } = await supabase.auth.signUp({
+    email,
+    password
+  });
+  if (authError) throw authError;
+
+  const insertPayload = {
+    nome,
+    user_login: userLogin,
+    email,
+    nivel,
+    ativo: true
+  };
+  if (authData?.user?.id) insertPayload.auth_user_id = authData.user.id;
+
+  const { data, error } = await supabase.from('professores').insert(insertPayload).select().single();
+  if (error) throw error;
+  return data;
+}
+
 export async function removeProfessor(id) {
   const { error } = await supabase.from('professores').update({ ativo: false }).eq('id', id);
   if (error) throw error;

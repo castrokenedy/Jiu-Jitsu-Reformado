@@ -12,7 +12,7 @@ import {
   createRecompensa,
   createEvento,
   saveMeta,
-  createProfessor,
+  createProfessorWithAuth,
   removeProfessor,
   updateInscricaoStatus,
   insertPresencaLogs,
@@ -452,12 +452,12 @@ function renderProfs() {
 }
 window.cadastrarProf = async function cadastrarProf() {
   const nome = document.getElementById('pf-nome').value.trim(); const user = document.getElementById('pf-user').value.trim(); const pass = document.getElementById('pf-pass').value; const nivel = document.getElementById('pf-nivel').value;
-  if (!nome || !user) { toast('❌ Preencha nome e usuário'); return; }
+  if (!nome || !user || !pass) { toast('❌ Preencha nome, usuário e senha'); return; }
   if (!professores.some((p) => p.user_login === user)) {
     try {
-      await createProfessor({ nome, user_login: user, email: `${user}@trocar-email.com`, nivel, ativo: true });
+      await createProfessorWithAuth(user, pass, nome, nivel);
       ['pf-nome', 'pf-user', 'pf-pass'].forEach((id) => { const e = document.getElementById(id); if (e) e.value = ''; });
-      await refreshData(); renderProfs(); toast(`✅ Prof. ${nome} cadastrado!`);
+      await refreshData(); renderProfs(); toast(`✅ Prof. ${nome} cadastrado e usuário criado!`);
     } catch (e) { toast(`❌ ${e.message}`); }
   } else toast('❌ Usuário já existe');
 };

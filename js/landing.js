@@ -33,6 +33,8 @@ window.doLogin = async function doLogin() {
     err.style.display = 'none';
     window.location.href = './painel.html';
   } catch (e) {
+    console.error('Login error:', e);
+    err.textContent = e.message || 'Usuário ou senha incorretos';
     err.style.display = 'block';
     setTimeout(() => err.style.display = 'none', 2500);
   }
