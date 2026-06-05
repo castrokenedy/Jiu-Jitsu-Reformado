@@ -112,7 +112,7 @@ export async function listPainelData() {
       }
       throw err;
     }),
-    supabase.from('devocionais').select('*').order('data', { ascending: true }).then((res) => res).catch(async (err) => { if (err?.message?.includes('column') && err.message.includes('data')) { return supabase.from('devocionais').select('*'); } throw err; }),
+    supabase.from('devocionais').select('*').order('data_devocional', { ascending: true }).then((res) => res).catch(async (err) => { if (err?.message?.includes('column') && err.message.includes('data_devocional')) { return supabase.from('devocionais').select('*'); } return supabase.from('devocionais').select('*').order('data', { ascending: true }); }),
     supabase.from('campeonatos').select('*').order('id', { ascending: false }),
     supabase.from('cestas').select('*').order('id', { ascending: false }),
     supabase.from('inscricoes').select('*').order('id', { ascending: false }),
@@ -162,6 +162,7 @@ export async function createDevocional(payload) {
   const insertPayload = { ...payload };
   if (!insertPayload.data_devocional && insertPayload.data) {
     insertPayload.data_devocional = insertPayload.data;
+    delete insertPayload.data;
   }
   const { error } = await supabase.from('devocionais').insert(insertPayload);
   if (error) throw error;

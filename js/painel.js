@@ -495,7 +495,7 @@ window.agendarDevo = async function agendarDevo() {
   const dia = document.getElementById('dv-dia').value;
   const passagem = document.getElementById('dv-passagem').value.trim() || 'A definir';
   try {
-    await createDevocional({ dia, data, aluno: a.nome, aluno_id: a.id, passagem });
+    await createDevocional({ dia, data_devocional: data, aluno: a.nome, aluno_id: a.id, passagem });
     await updateAluno(a.id, { pontos: (a.pontos || 0) + 3 });
     await refreshData();
     renderDevocionais(); renderDash();
