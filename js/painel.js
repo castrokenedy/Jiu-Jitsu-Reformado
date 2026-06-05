@@ -483,11 +483,17 @@ window.darPontos = async function darPontos() {
 // ==== DEVOCIONAL ====
 function renderDevocionais() {
   const el = document.getElementById('devo-list'); if (!el) return;
-  el.innerHTML = devocionais.slice(0, 8).map((d) => `<div class="devo-slot"><div><div class="devo-day">${d.dia === 'seg' ? 'Segunda' : 'Quinta'}</div><div class="devo-date">${fmtDate(d.data)}</div></div><div><div class="devo-name">${d.aluno}</div><div class="devo-date" style="color:var(--vc);">${d.passagem || ''}</div></div></div>`).join('');
+  el.innerHTML = devocionais.slice(0, 8).map((d) => {
+    const devoData = d.data_devocional || d.data;
+    return `<div class="devo-slot"><div><div class="devo-day">${d.dia === 'seg' ? 'Segunda' : 'Quinta'}</div><div class="devo-date">${fmtDate(devoData)}</div></div><div><div class="devo-name">${d.aluno}</div><div class="devo-date" style="color:var(--vc);">${d.passagem || ''}</div></div></div>`;
+  }).join('');
 }
 window.agendarDevo = async function agendarDevo() {
   const id = parseInt(document.getElementById('dv-aluno').value, 10); const a = alunos.find((x) => x.id === id); if (!a) return;
-  const data = document.getElementById('dv-data').value; const dia = document.getElementById('dv-dia').value; const passagem = document.getElementById('dv-passagem').value.trim() || 'A definir';
+  const data = document.getElementById('dv-data').value;
+  if (!data) { toast('❌ Informe a data do devocional'); return; }
+  const dia = document.getElementById('dv-dia').value;
+  const passagem = document.getElementById('dv-passagem').value.trim() || 'A definir';
   try {
     await createDevocional({ dia, data, aluno: a.nome, aluno_id: a.id, passagem });
     await updateAluno(a.id, { pontos: (a.pontos || 0) + 3 });

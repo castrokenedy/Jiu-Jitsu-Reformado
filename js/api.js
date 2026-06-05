@@ -159,7 +159,11 @@ export async function deactivateAluno(id) {
 }
 
 export async function createDevocional(payload) {
-  const { error } = await supabase.from('devocionais').insert(payload);
+  const insertPayload = { ...payload };
+  if (!insertPayload.data_devocional && insertPayload.data) {
+    insertPayload.data_devocional = insertPayload.data;
+  }
+  const { error } = await supabase.from('devocionais').insert(insertPayload);
   if (error) throw error;
 }
 
