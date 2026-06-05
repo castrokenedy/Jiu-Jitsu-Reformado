@@ -134,7 +134,10 @@ export async function listPainelData() {
 }
 
 export async function createInscricao(payload) {
-  const { error } = await supabase.from('inscricoes').insert(payload);
+  // Garantir que a coluna obrigatória `whatsapp` seja preenchida
+  const insertPayload = { ...payload };
+  if (!insertPayload.whatsapp && insertPayload.tel) insertPayload.whatsapp = insertPayload.tel;
+  const { error } = await supabase.from('inscricoes').insert(insertPayload);
   if (error) throw error;
 }
 

@@ -22,6 +22,7 @@ function avatarEl(a, size) { const s = size || 36; return a.foto ? `<div class="
 window.scrollTo2 = function scrollTo2(id) { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth' }); };
 window.openLogin = function openLogin() { document.getElementById('login-overlay').classList.add('open'); };
 window.closeLogin = function closeLogin() { document.getElementById('login-overlay').classList.remove('open'); };
+window.toggleNav = function toggleNav() { const nav = document.getElementById('main-nav'); if (!nav) return; nav.classList.toggle('open'); };
 
 window.doLogin = async function doLogin() {
   const u = document.getElementById('login-user').value.trim();
