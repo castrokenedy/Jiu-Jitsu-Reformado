@@ -398,14 +398,14 @@ window.salvarPresenca = async function salvarPresenca() {
     for (const [id, p] of Object.entries(presencaState)) {
       const a = alunos.find((x) => x.id === parseInt(id, 10)); if (!a) continue;
       const payload = { presencas: a.presencas || 0, faltas: a.faltas || 0, pontos: a.pontos || 0 };
-      if (p) { payload.presencas += 1; payload.pontos += 5; c += 1; logs.push({ data, dia, aluno_id: a.id, nome: a.nome, presente: true }); }
+      if (p) { payload.presencas += 1; payload.pontos += 1; c += 1; logs.push({ data, dia, aluno_id: a.id, nome: a.nome, presente: true }); }
       else { payload.faltas += 1; logs.push({ data, dia, aluno_id: a.id, nome: a.nome, presente: false }); }
       await updateAluno(a.id, payload);
     }
     await insertPresencaLogs(logs);
     await refreshData();
     presencaState = {}; renderChamada(); renderAlunos(); renderDash(); renderRanking(); renderRankingPub();
-    toast(`✅ Presença salva! ${c} alunos presentes (+5 pts cada)`);
+    toast(`✅ Presença salva! ${c} alunos presentes (+1 pt cada)`);
   } catch (e) { toast(`❌ ${e.message}`); }
 };
 
@@ -527,7 +527,7 @@ window.regCamp = async function regCamp() {
   const id = parseInt(document.getElementById('camp-aluno').value, 10); const a = alunos.find((x) => x.id === id); if (!a) return;
   const nome = document.getElementById('camp-nome').value.trim(); if (!nome) { toast('Informe o nome do campeonato'); return; }
   const rv = document.getElementById('camp-res').value; const pts = parseInt(rv.split('_')[0], 10);
-  const labels = { 8: 'Participou', '20_3': '🥉 3º Lugar', '20_2': '🥈 2º Lugar', '20_1': '🥇 Campeão' };
+  const labels = { 20: 'Participou', '50_3': '🥉 3º Lugar', '50_2': '🥈 2º Lugar', '50_1': '🥇 Campeão' };
   try {
     await createCampeonato({ aluno: a.nome, aluno_id: a.id, camp: nome, res: labels[rv], pts });
     await updateAluno(a.id, { pontos: (a.pontos || 0) + pts });
@@ -547,7 +547,7 @@ function renderCestas() {
 }
 window.regCesta = async function regCesta() {
   const id = parseInt(document.getElementById('cesta-aluno').value, 10); const a = alunos.find((x) => x.id === id); if (!a) return;
-  const tipo = document.getElementById('cesta-tipo').value; const qtd = parseInt(document.getElementById('cesta-qtd').value, 10) || 1; const pts = tipo === 'cesta' ? qtd * 15 : qtd * 5;
+  const tipo = document.getElementById('cesta-tipo').value; const qtd = parseInt(document.getElementById('cesta-qtd').value, 10) || 1; const pts = tipo === 'cesta' ? qtd * 20 : qtd * 3;
   try {
     await createCesta({ aluno: a.nome, aluno_id: a.id, tipo, qtd, pts });
     await updateAluno(a.id, { pontos: (a.pontos || 0) + pts });

@@ -135,7 +135,7 @@
           <div class="form-row">
             <div class="field"><label>Data</label><input id="pres-data" type="date"></div>
             <div class="field"><label>Dia</label><select id="pres-dia"><option value="seg">Segunda-feira</option><option value="qui">Quinta-feira</option></select></div>
-            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="salvarPresenca()">Salvar Presença (+5 pts)</button></div>
+            <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="salvarPresenca()">Salvar Presença (+1 pt)</button></div>
           </div>
         </div>
       </div>
@@ -213,11 +213,11 @@
             <div class="field" style="flex:2;min-width:200px;"><label>Motivo</label>
               <select id="pt-motivo">
                 <option value="3">+3 — Ministrou devocional</option>
-                <option value="10">+10 — Trouxe visitante</option>
-                <option value="8">+8 — Participou de campeonato</option>
-                <option value="20">+20 — Pódio em campeonato</option>
-                <option value="5">+5 — Juntou 1 kg de alimento</option>
-                <option value="15">+15 — Montou cesta básica</option>
+                <option value="20">+20 — Trouxe visitante</option>
+                <option value="20">+20 — Participou de campeonato</option>
+                <option value="50">+50 — Pódio em campeonato</option>
+                <option value="3">+3 — Juntou 1 kg de alimento</option>
+                <option value="20">+20 — Montou cesta básica</option>
                 <option value="2">+2 — Participação especial</option>
               </select>
             </div>
@@ -308,7 +308,7 @@
             <div class="field" style="min-width:170px;"><label>Aluno</label><select id="camp-aluno"></select></div>
             <div class="field" style="flex:2;min-width:180px;"><label>Campeonato</label><input id="camp-nome" type="text" placeholder="Nome do campeonato"></div>
             <div class="field"><label>Resultado</label>
-              <select id="camp-res"><option value="8">Participou (+8 pts)</option><option value="20_3">🥉 3º Lugar (+20 pts)</option><option value="20_2">🥈 2º Lugar (+20 pts)</option><option value="20_1">🥇 Campeão (+20 pts)</option></select>
+              <select id="camp-res"><option value="20">Participou (+20 pts)</option><option value="50_3">🥉 3º Lugar (+50 pts)</option><option value="50_2">🥈 2º Lugar (+50 pts)</option><option value="50_1">🥇 Campeão (+50 pts)</option></select>
             </div>
             <div class="field" style="justify-content:flex-end;"><button class="btn-sm btn-d" onclick="regCamp()">Registrar 🏆</button></div>
           </div>
